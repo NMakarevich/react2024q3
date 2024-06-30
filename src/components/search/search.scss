@@ -1,0 +1,17 @@
+.search {
+  display: flex;
+  gap: 10px;
+
+  &-input {
+    padding: 5px;
+    font-size: 1rem;
+    border: 1px solid black;
+    border-radius: 3px;
+  }
+
+  &-button {
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 3px;
+  }
+}
