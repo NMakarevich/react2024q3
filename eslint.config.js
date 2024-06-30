@@ -33,6 +33,7 @@ export default tseslint.config(
     rules: {
       ...eslintConfigPrettier.rules,
       '@typescript-eslint/no-explicit-any': 'error',
+      'react-compiler/react-compiler': 'error'
     },
   },
 );
