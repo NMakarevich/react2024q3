@@ -1,10 +1,7 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
 import { Component } from 'react';
 import './App.scss';
 import Search from './components/search/search.tsx';
+import ResultsList from './components/results-list/results-list.tsx';
 
 export interface Results {
   created_at: string;
@@ -28,31 +25,6 @@ interface State {
   loading: boolean;
 }
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  );
-}
 export default class App extends Component {
   state: State = {
     results: [],
@@ -69,6 +41,12 @@ export default class App extends Component {
             sendResults={this.setResults}
           ></Search>
         </header>
+        <main className={'app-main'}>
+          <ResultsList
+            results={this.state.results}
+            loading={this.state.loading}
+          ></ResultsList>
+        </main>
       </>
     );
   }
