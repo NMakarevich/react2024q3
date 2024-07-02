@@ -8,7 +8,7 @@ interface State {
 }
 
 interface Props {
-  setLoading: () => void;
+  setLoading: (isLoading: boolean) => void;
   sendResults: (results: Results[]) => void;
 }
 
@@ -20,6 +20,12 @@ export default class Search extends Component<Props, State> {
     this.state = {
       searchTerm: localStorage.getItem(SEARCH_TERM) || '',
     };
+  }
+
+  componentDidMount() {
+    if (this.state.searchTerm) {
+      this.search();
+    }
   }
 
   render() {
@@ -54,8 +60,7 @@ export default class Search extends Component<Props, State> {
   search = () => {
     const { searchTerm } = this.state;
     localStorage.setItem(SEARCH_TERM, searchTerm);
-    this.props.setLoading();
-    fetch(`${BASE_URL}?q=${searchTerm}&per_page=24&page=1`)
+    this.props.setLoading(true);
     const url = this.state.searchTerm
       ? `${BASE_URL}?q=${encodeURIComponent(searchTerm)}`
       : `${SECOND_URL}`;
@@ -63,7 +68,7 @@ export default class Search extends Component<Props, State> {
       .then((res) => res.json())
       .then((res) => res.items)
       .then((items: Results[]) => {
-        this.props.setLoading();
+        this.props.setLoading(false);
         this.props.sendResults(items);
       });
   };

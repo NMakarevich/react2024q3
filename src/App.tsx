@@ -2,6 +2,7 @@ import { Component } from 'react';
 import './App.scss';
 import Search from './components/search/search.tsx';
 import ResultsList from './components/results-list/results-list.tsx';
+import { ErrorBoundary } from './components/error-boundary/error-boundary.tsx';
 
 export interface Results {
   created_at: string;
@@ -23,37 +24,51 @@ export interface Results {
 interface State {
   results: Results[];
   loading: boolean;
+  errorClicked: boolean;
 }
 
 export default class App extends Component {
   state: State = {
     results: [],
     loading: false,
+    errorClicked: false,
+  };
+
+  handleClick = () => {
+    this.setState({ errorClicked: true });
   };
 
   render() {
+    if (this.state.errorClicked) {
+      throw new Error('Error button is clicked');
+    }
     return (
       <>
-        <header className={'app-header'}>
-          <h1>Search repository on GitHub</h1>
-          <Search
-            setLoading={this.setLoading}
-            sendResults={this.setResults}
-          ></Search>
-        </header>
-        <main className={'app-main'}>
-          <ResultsList
-            results={this.state.results}
-            loading={this.state.loading}
-          ></ResultsList>
-        </main>
+        <ErrorBoundary>
+          <header className={'app-header'}>
+            <h1>Search repository on GitHub</h1>
+            <Search
+              setLoading={this.setLoading}
+              sendResults={this.setResults}
+            ></Search>
+            <button type={'button'} onClick={this.handleClick}>
+              Error
+            </button>
+          </header>
+          <main className={'app-main'}>
+            <ResultsList
+              results={this.state.results}
+              loading={this.state.loading}
+            ></ResultsList>
+          </main>
+        </ErrorBoundary>
       </>
     );
   }
 
-  setLoading = () => {
+  setLoading = (isLoading: boolean) => {
     this.setState({
-      loading: !this.state.loading,
+      loading: isLoading,
     });
   };
 
@@ -61,5 +76,9 @@ export default class App extends Component {
     this.setState({
       results: [...results],
     });
+  };
+
+  throwError = () => {
+    throw new Error('Error');
   };
 }
