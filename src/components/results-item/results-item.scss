@@ -7,6 +7,11 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.3);
+  transition: 0.4s;
+
+  &:hover {
+    transform: scale(1.05);
+  }
 
   &-header {
     display: flex;
@@ -32,7 +37,6 @@
 
   &-title {
     font-size: 1.2rem;
-    word-wrap: anywhere;
   }
 
   &-info {
@@ -44,7 +48,6 @@
   &-author {
     display: flex;
     gap: 10px;
-    justify-content: end;
     font-size: 1rem;
 
     &_title {
@@ -56,6 +59,7 @@
 .link {
   text-decoration: none;
   color: gray;
+  word-break: break-word;
 }
 
 @media (max-width: 650px) {
