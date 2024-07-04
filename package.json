@@ -37,5 +37,11 @@
   },
   "overrides": {
     "eslint": "^9.5.0"
+  },
+  "lint-staged": {
+    "src/**/*.{tsx, html, scss}": [
+      "prettier --write",
+      "eslint --report-unused-disable-directives --max-warnings 0"
+    ]
   }
 }
