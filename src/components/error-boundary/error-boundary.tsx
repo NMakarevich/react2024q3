@@ -1,4 +1,5 @@
 import { Component, ReactNode } from 'react';
+import './error-boundary.scss';
 
 interface State {
   hasError: boolean;
@@ -29,7 +30,14 @@ export class ErrorBoundary extends Component<Props, State> {
 
   render() {
     if (this.state.hasError) {
-      return <div className={'error'}>{this.state.errorMessage}</div>;
+      return (
+        <div className={'error'}>
+          <span className="error-message">{this.state.errorMessage}</span>
+          <a className="error-link" href="/">
+            Back to home page
+          </a>
+        </div>
+      );
     }
 
     return this.props.children;
