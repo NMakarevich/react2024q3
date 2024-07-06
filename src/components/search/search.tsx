@@ -1,11 +1,7 @@
-import { ChangeEvent, Component } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Results } from '../../App.tsx';
 import { BASE_URL, PER_PAGE, SECOND_URL } from '../../consts.tsx';
 import './search.scss';
-
-interface State {
-  searchTerm: string;
-}
 
 interface Props {
   setLoading: (isLoading: boolean) => void;
@@ -14,62 +10,55 @@ interface Props {
 
 const SEARCH_TERM = 'search-term';
 
-export default class Search extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      searchTerm: localStorage.getItem(SEARCH_TERM) || '',
-    };
+export default function Search(props: Props) {
+  const { setLoading, sendResults } = props;
+
+  const [searchTerm, setSearchTerm] = useState(getSearchTermFromLS);
+
+  useEffect(() => {
+    search();
+    return () => {};
+  }, []);
+
+  function getSearchTermFromLS() {
+    return localStorage.getItem(SEARCH_TERM) || '';
   }
 
-  componentDidMount() {
-    if (this.state.searchTerm) {
-      this.search();
-    }
-  }
-
-  render() {
-    return (
-      <>
-        <div className="search">
-          <input
-            className={'search-input'}
-            type="text"
-            name="search"
-            defaultValue={this.state.searchTerm}
-            onChange={this.handleInput}
-          />
-          <button
-            className={'search-button'}
-            type="button"
-            onClick={this.search}
-          >
-            Search
-          </button>
-        </div>
-      </>
-    );
-  }
-
-  handleInput = (e: ChangeEvent) => {
+  function handleInput(e: ChangeEvent) {
     let inputValue = '';
     if (e.target instanceof HTMLInputElement) inputValue = e.target.value;
-    this.setState({ searchTerm: inputValue });
-  };
+    setSearchTerm(inputValue);
+  }
 
-  search = () => {
-    const { searchTerm } = this.state;
+  function search() {
     localStorage.setItem(SEARCH_TERM, searchTerm);
-    this.props.setLoading(true);
-    const url = this.state.searchTerm
+    setLoading(true);
+    const url = searchTerm
       ? `${BASE_URL}?q=${encodeURIComponent(searchTerm)}`
       : `${SECOND_URL}`;
     fetch(`${url}&per_page=${PER_PAGE}&page=1`)
       .then((res) => res.json())
       .then((res) => res.items)
       .then((items: Results[]) => {
-        this.props.setLoading(false);
-        this.props.sendResults(items);
+        setLoading(false);
+        sendResults(items);
       });
-  };
+  }
+
+  return (
+    <>
+      <div className="search">
+        <input
+          className={'search-input'}
+          type="text"
+          name="search"
+          defaultValue={searchTerm}
+          onChange={handleInput}
+        />
+        <button className={'search-button'} type="button" onClick={search}>
+          Search
+        </button>
+      </div>
+    </>
+  );
 }

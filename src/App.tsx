@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 import './App.scss';
 import Search from './components/search/search.tsx';
 import ResultsList from './components/results-list/results-list.tsx';
@@ -20,62 +20,40 @@ export interface Results {
   };
 }
 
-interface State {
-  results: Results[];
-  loading: boolean;
-  errorClicked: boolean;
-}
+export default function App() {
+  const [results, setResults] = useState<Results[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [errorClicked, setErrorClicked] = useState<boolean>(false);
 
-export default class App extends Component {
-  state: State = {
-    results: [],
-    loading: false,
-    errorClicked: false,
-  };
+  useEffect(() => {
+    if (errorClicked) throw new Error('Error button is clicked');
+    return () => {};
+  }, [errorClicked]);
 
-  handleClick = () => {
-    this.setState({ errorClicked: true });
-  };
-
-  render() {
-    if (this.state.errorClicked) {
-      throw new Error('Error button is clicked');
-    }
-    return (
-      <>
-        <header className={'app-header'}>
-          <h1>Search repository on GitHub</h1>
-          <Search
-            setLoading={this.setLoading}
-            sendResults={this.setResults}
-          ></Search>
-          <button type={'button'} onClick={this.handleClick}>
-            Throw error
-          </button>
-        </header>
-        <main className={'app-main'}>
-          <ResultsList
-            results={this.state.results}
-            loading={this.state.loading}
-          ></ResultsList>
-        </main>
-      </>
-    );
+  function handleClick() {
+    setErrorClicked(true);
   }
 
-  setLoading = (isLoading: boolean) => {
-    this.setState({
-      loading: isLoading,
-    });
-  };
+  function changeLoading(isLoading: boolean) {
+    setLoading(isLoading);
+  }
 
-  setResults = (results: Results[]) => {
-    this.setState({
-      results: [...results],
-    });
-  };
+  function getResults(results: Results[]) {
+    setResults([...results]);
+  }
 
-  throwError = () => {
-    throw new Error('Error');
-  };
+  return (
+    <>
+      <header className={'app-header'}>
+        <h1>Search repository on GitHub</h1>
+        <Search setLoading={changeLoading} sendResults={getResults}></Search>
+        <button type={'button'} onClick={handleClick}>
+          Throw error
+        </button>
+      </header>
+      <main className={'app-main'}>
+        <ResultsList results={results} loading={loading}></ResultsList>
+      </main>
+    </>
+  );
 }
