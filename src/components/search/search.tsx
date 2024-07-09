@@ -1,17 +1,17 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { Results } from '../../App.tsx';
+import { Response } from '../../App.tsx';
 import { BASE_URL, PER_PAGE, SECOND_URL } from '../../consts.tsx';
 import './search.scss';
 
 interface Props {
   setLoading: (isLoading: boolean) => void;
-  sendResults: (results: Results[]) => void;
+  sendResponse: (results: Response) => void;
 }
 
 const SEARCH_TERM = 'search-term';
 
 export default function Search(props: Props) {
-  const { setLoading, sendResults } = props;
+  const { setLoading, sendResponse } = props;
 
   const [searchTerm, setSearchTerm] = useState(getSearchTermFromLS);
 
@@ -38,10 +38,9 @@ export default function Search(props: Props) {
       : `${SECOND_URL}`;
     fetch(`${url}&per_page=${PER_PAGE}&page=1`)
       .then((res) => res.json())
-      .then((res) => res.items)
-      .then((items: Results[]) => {
+      .then((res: Response) => {
         setLoading(false);
-        sendResults(items);
+        sendResponse(res);
       });
   }
 

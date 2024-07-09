@@ -12,6 +12,7 @@ export interface Results {
   language: string;
   name: string;
   stargazers_count: number;
+  topics: string[];
   owner: {
     avatar_url: string;
     id: number;
@@ -20,8 +21,16 @@ export interface Results {
   };
 }
 
+export interface Response {
+  total_count: number;
+  items: Results[];
+}
+
 export default function App() {
-  const [results, setResults] = useState<Results[]>([]);
+  const [response, setResponse] = useState<Response>({
+    total_count: 0,
+    items: [],
+  });
   const [loading, setLoading] = useState<boolean>(false);
   const [errorClicked, setErrorClicked] = useState<boolean>(false);
 
@@ -38,21 +47,21 @@ export default function App() {
     setLoading(isLoading);
   }
 
-  function getResults(results: Results[]) {
-    setResults([...results]);
+  function getResponse(response: Response) {
+    setResponse({ ...response });
   }
 
   return (
     <>
       <header className={'app-header'}>
         <h1>Search repository on GitHub</h1>
-        <Search setLoading={changeLoading} sendResults={getResults}></Search>
+        <Search setLoading={changeLoading} sendResponse={getResponse}></Search>
         <button type={'button'} onClick={handleClick}>
           Throw error
         </button>
       </header>
       <main className={'app-main'}>
-        <ResultsList results={results} loading={loading}></ResultsList>
+        <ResultsList response={response} loading={loading}></ResultsList>
       </main>
     </>
   );
