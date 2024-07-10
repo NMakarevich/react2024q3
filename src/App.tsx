@@ -3,7 +3,7 @@ import './App.scss';
 import Search from './components/search/search.tsx';
 import ResultsList from './components/results-list/results-list.tsx';
 
-export interface Results {
+export interface Result {
   created_at: string;
   description: string;
   full_name: string;
@@ -23,7 +23,7 @@ export interface Results {
 
 export interface Response {
   total_count: number;
-  items: Results[];
+  items: Result[];
 }
 
 export default function App() {

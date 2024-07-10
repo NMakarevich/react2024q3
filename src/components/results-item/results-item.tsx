@@ -1,8 +1,8 @@
-import { Results } from '../../App.tsx';
+import { Result } from '../../App.tsx';
 import './results-item.scss';
 
 interface Props {
-  result: Results;
+  result: Result;
 }
 
 export function ResultsItem(props: Props) {
