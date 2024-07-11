@@ -23,9 +23,7 @@ export default class Search extends Component<Props, State> {
   }
 
   componentDidMount() {
-    if (this.state.searchTerm) {
-      this.search();
-    }
+    this.search();
   }
 
   render() {
