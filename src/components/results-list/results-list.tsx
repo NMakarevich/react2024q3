@@ -2,6 +2,7 @@ import { Response } from '../../App.tsx';
 import { ResultsItem } from '../results-item/results-item.tsx';
 import './results-list.scss';
 import Pagination from '../pagination/pagination.tsx';
+import Loader from '../loader/loader.tsx';
 
 interface Props {
   response: Response;
@@ -13,7 +14,7 @@ export default function ResultsList(props: Props) {
 
   return (
     <>
-      <div className={loading ? 'loading' : 'hidden'}>Loading...</div>
+      <Loader isLoading={loading} />
       <div className={loading ? 'hidden' : 'container'}>
         {response?.items?.length ? (
           <Pagination totalCount={response.total_count} />

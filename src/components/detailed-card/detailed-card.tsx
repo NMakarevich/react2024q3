@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 
 import './detailed-card.scss';
 import { transformStars } from '../../utils.ts';
+import Loader from '../loader/loader.tsx';
 
 export default function DetailedCard() {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ export default function DetailedCard() {
 
   return (
     <>
-      <div className={loading ? 'loading' : 'hidden'}>Loading...</div>
+      <Loader isLoading={loading} />
       <div className={loading ? 'hidden' : 'card'}>
         <button className="card-close" onClick={closeCard}>
           X
