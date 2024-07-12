@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import './pagination.scss';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { PageContext } from '../../App.tsx';
@@ -15,11 +15,6 @@ export default function Pagination(props: Props) {
   const [, setSearchParam] = useSearchParams();
   const navigate = useNavigate();
   const location = useLocation();
-
-  useEffect(() => {
-    setSearchParam({ page: pageContext.toString() });
-    return () => {};
-  }, []);
 
   function prevPage() {
     setPage(page - 1);
