@@ -2,6 +2,7 @@ import { PageContext, Result } from '../../App.tsx';
 import './results-item.scss';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
+import { transformStars } from '../../utils.ts';
 
 interface Props {
   result: Result;
@@ -47,8 +48,4 @@ export function ResultsItem(props: Props) {
       </div>
     </>
   );
-}
-
-function transformStars(stars: number): string {
-  return stars >= 1000 ? `${Math.round(stars / 1000)}k` : `${stars}`;
 }
