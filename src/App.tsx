@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from 'react';
 import './App.scss';
 import Search from './components/search/search.tsx';
 import ResultsList from './components/results-list/results-list.tsx';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
 
 export interface Result {
   created_at: string;
@@ -69,6 +69,7 @@ export default function App() {
         </header>
         <main className={'app-main'}>
           <ResultsList response={response} loading={loading}></ResultsList>
+          <Outlet />
         </main>
       </PageContext.Provider>
     </>

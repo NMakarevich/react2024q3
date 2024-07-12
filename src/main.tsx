@@ -9,6 +9,7 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import NotFound from './components/not-found/not-found.tsx';
+import DetailedCard from './components/detailed-card/detailed-card.tsx';
 
 const router = createBrowserRouter([
   {
@@ -18,8 +19,15 @@ const router = createBrowserRouter([
   {
     path: '/search',
     element: <App />,
-    errorElement: <NotFound />,
+    children: [
+      {
+        path: 'details',
+        element: <DetailedCard />,
+      },
+    ],
   },
+  { path: '/404', element: <NotFound /> },
+  { path: '*', element: <Navigate to={'/404'} /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
