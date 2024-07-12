@@ -1,6 +1,5 @@
 .card {
   display: flex;
-  flex-direction: column;
   gap: 10px;
   width: 300px;
   padding: 10px;
@@ -13,22 +12,15 @@
     transform: scale(1.05);
   }
 
-  &-header {
+  &-left {
     display: flex;
-    width: 100%;
-    justify-content: space-between;
-    gap: 10px;
+    gap: 5px;
+    align-items: start;
+  }
 
-    &_left {
-      display: flex;
-      gap: 5px;
-      align-items: start;
-    }
-
-    &_rigth {
-      align-self: start;
-      font-size: 1rem;
-    }
+  &-rigth {
+    align-self: start;
+    font-size: 1rem;
   }
 
   &-logo {
