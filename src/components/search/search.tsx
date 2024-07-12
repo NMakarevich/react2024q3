@@ -1,5 +1,5 @@
-import { ChangeEvent, useEffect, useState } from 'react';
-import { Response } from '../../App.tsx';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { PageContext, Response } from '../../App.tsx';
 import { BASE_URL, PER_PAGE, SECOND_URL } from '../../consts.tsx';
 import './search.scss';
 
@@ -12,13 +12,13 @@ const SEARCH_TERM = 'search-term';
 
 export default function Search(props: Props) {
   const { setLoading, sendResponse } = props;
-
   const [searchTerm, setSearchTerm] = useState(getSearchTermFromLS);
+  const pageContext = useContext(PageContext);
 
   useEffect(() => {
     search();
     return () => {};
-  }, []);
+  }, [pageContext]);
 
   function getSearchTermFromLS() {
     return localStorage.getItem(SEARCH_TERM) || '';
@@ -36,7 +36,7 @@ export default function Search(props: Props) {
     const url = searchTerm
       ? `${BASE_URL}?q=${encodeURIComponent(searchTerm)}`
       : `${SECOND_URL}`;
-    fetch(`${url}&per_page=${PER_PAGE}&page=1`)
+    fetch(`${url}&per_page=${PER_PAGE}&page=${pageContext}`)
       .then((res) => res.json())
       .then((res: Response) => {
         setLoading(false);
