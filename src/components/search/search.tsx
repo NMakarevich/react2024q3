@@ -2,6 +2,7 @@ import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { PageContext, Response } from '../../App.tsx';
 import { BASE_URL, PER_PAGE, SECOND_URL } from '../../consts.tsx';
 import './search.scss';
+import { useLocalStorage } from '../../hooks/useLocalStorage.tsx';
 
 interface Props {
   setLoading: (isLoading: boolean) => void;
@@ -12,17 +13,14 @@ const SEARCH_TERM = 'search-term';
 
 export default function Search(props: Props) {
   const { setLoading, sendResponse } = props;
-  const [searchTerm, setSearchTerm] = useState(getSearchTermFromLS);
+  const { ls, updateLocalStorage } = useLocalStorage(SEARCH_TERM);
+  const [searchTerm, setSearchTerm] = useState(ls);
   const pageContext = useContext(PageContext);
 
   useEffect(() => {
     search();
     return () => {};
   }, [pageContext]);
-
-  function getSearchTermFromLS() {
-    return localStorage.getItem(SEARCH_TERM) || '';
-  }
 
   function handleInput(e: ChangeEvent) {
     let inputValue = '';
@@ -31,7 +29,7 @@ export default function Search(props: Props) {
   }
 
   function search() {
-    localStorage.setItem(SEARCH_TERM, searchTerm);
+    updateLocalStorage(searchTerm);
     setLoading(true);
     const url = searchTerm
       ? `${BASE_URL}?q=${encodeURIComponent(searchTerm)}`
