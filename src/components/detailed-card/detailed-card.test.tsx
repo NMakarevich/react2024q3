@@ -1,4 +1,3 @@
-import React from 'react';
 import DetailedCard from './detailed-card';
 import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';

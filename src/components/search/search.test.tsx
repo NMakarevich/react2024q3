@@ -1,4 +1,3 @@
-import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import Search from './search.tsx';
 import { Response } from '../../App.tsx';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { response } from '../../mock/mock.ts';
 import { render, screen } from '@testing-library/react';
 import ResultsList from './results-list.tsx';
