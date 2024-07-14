@@ -10,9 +10,11 @@ interface Props {
 
 export default function Pagination(props: Props) {
   const pageContext = useContext(PageContext);
-  const [page, setPage] = useState<number>(pageContext);
+  const [searchParams, setSearchParam] = useSearchParams();
+  const [page, setPage] = useState<number>(
+    parseInt(searchParams.get('page') || pageContext.toString()),
+  );
   const { totalCount } = props;
-  const [, setSearchParam] = useSearchParams();
   const navigate = useNavigate();
   const location = useLocation();
 
