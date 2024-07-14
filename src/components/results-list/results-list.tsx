@@ -14,19 +14,24 @@ export default function ResultsList(props: Props) {
 
   return (
     <>
-      <Loader isLoading={loading} />
-      <div className={loading ? 'hidden' : 'container'}>
-        {response?.items?.length ? (
-          <Pagination totalCount={response.total_count} />
-        ) : (
-          ''
-        )}
-        <div className={'results-container'}>
-          {response.items.map((item) => (
-            <ResultsItem result={item} key={item.id}></ResultsItem>
-          ))}
+      {loading ? (
+        <Loader isLoading={loading} />
+      ) : (
+        <div className="container">
+          {response?.items?.length ? (
+            <Pagination totalCount={response.total_count} />
+          ) : (
+            ''
+          )}
+          <div className={'results-container'}>
+            {response.items.length
+              ? response.items.map((item) => (
+                  <ResultsItem result={item} key={item.id}></ResultsItem>
+                ))
+              : 'No results found.'}
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

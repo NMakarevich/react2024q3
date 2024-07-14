@@ -1,10 +1,11 @@
+import React from 'react';
 import './loader.scss';
 
 interface Props {
   isLoading: boolean;
 }
 
-export default function Loader(props: Props) {
+export default function Loader(props: Props): React.ReactNode {
   const { isLoading } = props;
-  return <div className={isLoading ? 'loading' : 'hidden'}>Loading...</div>;
+  return isLoading && <div className="loading">Loading...</div>;
 }
