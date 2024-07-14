@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import './App.scss';
 import Search from './components/search/search.tsx';
 import ResultsList from './components/results-list/results-list.tsx';
@@ -29,7 +29,7 @@ export interface Response {
 
 export const PageContext = createContext(1);
 
-export default function App() {
+export default function App(): React.ReactNode {
   const [response, setResponse] = useState<Response>({
     total_count: 0,
     items: [],

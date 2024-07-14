@@ -1,3 +1,4 @@
+import React from 'react';
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { PageContext, Response } from '../../App.tsx';
 import { BASE_URL, PER_PAGE, SECOND_URL } from '../../consts.tsx';
@@ -11,7 +12,7 @@ interface Props {
 
 const SEARCH_TERM = 'search-term';
 
-export default function Search(props: Props) {
+export default function Search(props: Props): React.ReactNode {
   const { setLoading, sendResponse } = props;
   const { ls, updateLocalStorage } = useLocalStorage(SEARCH_TERM);
   const [searchTerm, setSearchTerm] = useState(ls);
@@ -49,6 +50,7 @@ export default function Search(props: Props) {
           className={'search-input'}
           type="text"
           name="search"
+          aria-label="search-input"
           defaultValue={searchTerm}
           onChange={handleInput}
         />

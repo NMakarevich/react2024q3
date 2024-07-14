@@ -1,13 +1,13 @@
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { REPO_URL } from '../../consts.tsx';
 import { Result } from '../../App.tsx';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import './detailed-card.scss';
 import { transformStars } from '../../utils.ts';
 import Loader from '../loader/loader.tsx';
 
-export default function DetailedCard() {
+export default function DetailedCard(): React.ReactNode {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState<boolean>(false);

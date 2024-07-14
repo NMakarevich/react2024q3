@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './pagination.scss';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { PageContext } from '../../App.tsx';
@@ -8,7 +8,7 @@ interface Props {
   totalCount: number;
 }
 
-export default function Pagination(props: Props) {
+export default function Pagination(props: Props): React.ReactNode {
   const pageContext = useContext(PageContext);
   const [searchParams, setSearchParam] = useSearchParams();
   const [page, setPage] = useState<number>(

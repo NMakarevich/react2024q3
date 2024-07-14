@@ -1,3 +1,4 @@
+import React from 'react';
 import { Response } from '../../App.tsx';
 import { ResultsItem } from '../results-item/results-item.tsx';
 import './results-list.scss';
@@ -9,7 +10,7 @@ interface Props {
   loading: boolean;
 }
 
-export default function ResultsList(props: Props) {
+export default function ResultsList(props: Props): React.ReactNode {
   const { response, loading } = props;
 
   return (
