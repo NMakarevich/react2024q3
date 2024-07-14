@@ -1,0 +1,63 @@
+.result {
+  display: flex;
+  gap: 10px;
+  width: 300px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.3);
+  transition: 0.4s;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &-left {
+    display: flex;
+    gap: 5px;
+    align-items: start;
+  }
+
+  &-rigth {
+    align-self: start;
+    font-size: 1rem;
+  }
+
+  &-logo {
+    width: 20%;
+  }
+
+  &-title {
+    font-size: 1.2rem;
+  }
+
+  &-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  &-author {
+    display: flex;
+    gap: 10px;
+    font-size: 1rem;
+
+    &_title {
+      font-size: inherit;
+    }
+  }
+}
+
+.link {
+  text-decoration: none;
+  color: gray;
+  word-break: break-word;
+}
+
+@media (max-width: 650px) {
+  .card {
+    max-width: 600px;
+    min-width: 300px;
+    width: 100%;
+  }
+}
