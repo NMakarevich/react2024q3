@@ -1,9 +1,9 @@
 import React from 'react';
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { PageContext, Response } from '../../App.tsx';
-import { BASE_URL, PER_PAGE, SECOND_URL } from '../../consts.tsx';
 import './search.scss';
 import { useLocalStorage } from '../../hooks/useLocalStorage.tsx';
+import { getCards } from '../../api.ts';
 
 interface Props {
   setLoading: (isLoading: boolean) => void;
@@ -19,7 +19,7 @@ export default function Search(props: Props): React.ReactNode {
   const pageContext = useContext(PageContext);
 
   useEffect(() => {
-    search();
+    search().then(() => setLoading(false));
     return () => {};
   }, [pageContext]);
 
@@ -29,18 +29,11 @@ export default function Search(props: Props): React.ReactNode {
     setSearchTerm(inputValue);
   }
 
-  function search() {
+  async function search() {
     updateLocalStorage(searchTerm);
     setLoading(true);
-    const url = searchTerm
-      ? `${BASE_URL}?q=${encodeURIComponent(searchTerm)}`
-      : `${SECOND_URL}`;
-    fetch(`${url}&per_page=${PER_PAGE}&page=${pageContext}`)
-      .then((res) => res.json())
-      .then((res: Response) => {
-        setLoading(false);
-        sendResponse(res);
-      });
+    const results = await getCards(searchTerm, pageContext);
+    sendResponse(results);
   }
 
   return (

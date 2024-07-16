@@ -1,11 +1,10 @@
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { REPO_URL } from '../../consts.tsx';
 import { Result } from '../../App.tsx';
 import React, { useEffect, useState } from 'react';
-
 import './detailed-card.scss';
 import { transformStars } from '../../utils.ts';
 import Loader from '../loader/loader.tsx';
+import { getDetailedCard } from '../../api.ts';
 
 export default function DetailedCard(): React.ReactNode {
   const navigate = useNavigate();
@@ -15,19 +14,17 @@ export default function DetailedCard(): React.ReactNode {
   const location = useLocation();
 
   useEffect(() => {
-    loadData();
+    loadData().then(() => setLoading(false));
   }, [location]);
 
-  function loadData() {
-    setLoading(true);
-    fetch(
-      `${REPO_URL}/${searchParams.get('owner')}/${searchParams.get('name')}`,
-    )
-      .then((res) => res.json())
-      .then((data: Result) => {
-        setItem(data);
-        setLoading(false);
-      });
+  async function loadData() {
+    const owner = searchParams.get('owner');
+    const name = searchParams.get('name');
+    if (owner && name) {
+      setLoading(true);
+      const detailed = await getDetailedCard(owner, name);
+      setItem(detailed);
+    }
   }
 
   function closeCard() {
