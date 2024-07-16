@@ -43,6 +43,7 @@ export default function Pagination(props: Props): React.ReactNode {
       >
         Prev page
       </button>
+      <span className="pagination-page">{`${page} of ${Math.ceil(totalCount / PER_PAGE)}`}</span>
       <button
         className="pagination-next pagination-btn"
         disabled={isLastPage()}
