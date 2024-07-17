@@ -1,4 +1,10 @@
-import { pageContext, PageContext, Result } from '../../App.tsx';
+import {
+  PageContext,
+  ThemeContext,
+  IPageContext,
+  Result,
+  IThemeContext,
+} from '../../App.tsx';
 import './results-item.scss';
 import { useNavigate } from 'react-router-dom';
 import React, { useContext } from 'react';
@@ -11,7 +17,8 @@ interface Props {
 export function ResultsItem(props: Props): React.ReactNode {
   const { result } = props;
   const navigate = useNavigate();
-  const { page } = useContext(PageContext) as pageContext;
+  const { page } = useContext(PageContext) as IPageContext;
+  const { theme } = useContext(ThemeContext) as IThemeContext;
 
   function navigateTo() {
     navigate(
@@ -21,7 +28,11 @@ export function ResultsItem(props: Props): React.ReactNode {
 
   return (
     <>
-      <div className={'result'} onClick={navigateTo} aria-label="result-item">
+      <div
+        className={`result theme-${theme}`}
+        onClick={navigateTo}
+        aria-label="result-item"
+      >
         <div className={'result-left'}>
           <img
             className={'result-logo'}

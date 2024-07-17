@@ -1,6 +1,6 @@
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { Result } from '../../App.tsx';
-import React, { useEffect, useState } from 'react';
+import { ThemeContext, Result, IThemeContext } from '../../App.tsx';
+import React, { useContext, useEffect, useState } from 'react';
 import './detailed-card.scss';
 import { transformStars } from '../../utils.ts';
 import Loader from '../loader/loader.tsx';
@@ -12,6 +12,7 @@ export default function DetailedCard(): React.ReactNode {
   const [loading, setLoading] = useState<boolean>(false);
   const [item, setItem] = useState<Result>();
   const location = useLocation();
+  const { theme } = useContext(ThemeContext) as IThemeContext;
 
   useEffect(() => {
     loadData().then(() => setLoading(false));
@@ -38,7 +39,7 @@ export default function DetailedCard(): React.ReactNode {
       {loading ? (
         <Loader isLoading={loading} />
       ) : (
-        <div className="card">
+        <div className={`card theme-${theme}`}>
           <button className="card-close" onClick={closeCard}>
             X
           </button>

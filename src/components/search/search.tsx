@@ -1,6 +1,12 @@
 import React from 'react';
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
-import { pageContext, PageContext, Response } from '../../App.tsx';
+import {
+  PageContext,
+  ThemeContext,
+  IPageContext,
+  Response,
+  IThemeContext,
+} from '../../App.tsx';
 import './search.scss';
 import { useLocalStorage } from '../../hooks/useLocalStorage.tsx';
 import { getCards } from '../../api.ts';
@@ -16,7 +22,8 @@ export default function Search(props: Props): React.ReactNode {
   const { setLoading, sendResponse } = props;
   const [ls, updateLocalStorage] = useLocalStorage(SEARCH_TERM);
   const [searchTerm, setSearchTerm] = useState(ls);
-  const { page, setPage } = useContext(PageContext) as pageContext;
+  const { page, setPage } = useContext(PageContext) as IPageContext;
+  const { theme } = useContext(ThemeContext) as IThemeContext;
 
   useEffect(() => {
     search().then(() => setLoading(false));
@@ -44,7 +51,7 @@ export default function Search(props: Props): React.ReactNode {
 
   return (
     <>
-      <div className="search">
+      <div className={`search theme-${theme}`}>
         <input
           className={'search-input'}
           type="text"

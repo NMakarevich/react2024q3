@@ -1,5 +1,5 @@
-import React from 'react';
-import { Response } from '../../App.tsx';
+import React, { useContext } from 'react';
+import { ThemeContext, Response, IThemeContext } from '../../App.tsx';
 import { ResultsItem } from '../results-item/results-item.tsx';
 import './results-list.scss';
 import Pagination from '../pagination/pagination.tsx';
@@ -12,13 +12,14 @@ interface Props {
 
 export default function ResultsList(props: Props): React.ReactNode {
   const { response, loading } = props;
+  const { theme } = useContext(ThemeContext) as IThemeContext;
 
   return (
     <>
       {loading ? (
         <Loader isLoading={loading} />
       ) : (
-        <div className="container">
+        <div className={`container theme-${theme}`}>
           {response?.items?.length ? (
             <Pagination totalCount={response.total_count} />
           ) : (

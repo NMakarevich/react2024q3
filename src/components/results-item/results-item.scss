@@ -1,11 +1,13 @@
+@use './../../scss/themes' as *;
+
 .result {
   display: flex;
   gap: 10px;
   width: 300px;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border);
   border-radius: 5px;
-  box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.3);
+  box-shadow: 1px 1px 3px 1px var(--box-shadow);
   transition: 0.4s;
 
   &:hover {
@@ -50,7 +52,7 @@
 
 .link {
   text-decoration: none;
-  color: gray;
+  color: var(--link);
   word-break: break-word;
 }
 

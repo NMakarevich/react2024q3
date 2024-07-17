@@ -3,6 +3,7 @@ import './App.scss';
 import Search from './components/search/search.tsx';
 import ResultsList from './components/results-list/results-list.tsx';
 import { Outlet, useSearchParams } from 'react-router-dom';
+import { ToggleTheme } from './components/toogle-theme/toggle-theme.tsx';
 
 export interface Result {
   created_at: string;
@@ -27,12 +28,19 @@ export interface Response {
   items: Result[];
 }
 
-export interface pageContext {
+export interface IPageContext {
   page: number;
   setPage: (page: number) => void;
 }
 
-export const PageContext = createContext<pageContext | null>(null);
+export interface IThemeContext {
+  theme: string;
+  setTheme: (theme: string) => void;
+}
+
+export const PageContext = createContext<IPageContext | null>(null);
+
+export const ThemeContext = createContext<IThemeContext | null>(null);
 
 export default function App(): React.ReactNode {
   const [response, setResponse] = useState<Response>({
@@ -42,6 +50,7 @@ export default function App(): React.ReactNode {
   const [loading, setLoading] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState<number>(getPageFromURL);
+  const [theme, setTheme] = useState('light');
 
   useEffect(() => {
     setSearchParams({ page: page.toString() });
@@ -67,17 +76,20 @@ export default function App(): React.ReactNode {
           setPage,
         }}
       >
-        <header className={'app-header'}>
-          <h1>Search repository on GitHub</h1>
-          <Search
-            setLoading={changeLoading}
-            sendResponse={getResponse}
-          ></Search>
-        </header>
-        <main className={'app-main'}>
-          <ResultsList response={response} loading={loading}></ResultsList>
-          <Outlet />
-        </main>
+        <ThemeContext.Provider value={{ theme, setTheme }}>
+          <header className={`app-header theme-${theme}`}>
+            <h1>Search repository on GitHub</h1>
+            <Search
+              setLoading={changeLoading}
+              sendResponse={getResponse}
+            ></Search>
+            <ToggleTheme />
+          </header>
+          <main className={`app-main theme-${theme}`}>
+            <ResultsList response={response} loading={loading}></ResultsList>
+            <Outlet />
+          </main>
+        </ThemeContext.Provider>
       </PageContext.Provider>
     </>
   );
