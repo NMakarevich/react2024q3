@@ -1,4 +1,4 @@
-import { PageContext, Result } from '../../App.tsx';
+import { pageContext, PageContext, Result } from '../../App.tsx';
 import './results-item.scss';
 import { useNavigate } from 'react-router-dom';
 import React, { useContext } from 'react';
@@ -11,11 +11,11 @@ interface Props {
 export function ResultsItem(props: Props): React.ReactNode {
   const { result } = props;
   const navigate = useNavigate();
-  const pageContext = useContext(PageContext);
+  const { page } = useContext(PageContext) as pageContext;
 
   function navigateTo() {
     navigate(
-      `/search/details?owner=${result.owner.login}&name=${result.name}&page=${pageContext}`,
+      `/search/details?owner=${result.owner.login}&name=${result.name}&page=${page}`,
     );
   }
 

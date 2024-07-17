@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useState } from 'react';
 import './App.scss';
 import Search from './components/search/search.tsx';
 import ResultsList from './components/results-list/results-list.tsx';
-import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
+import { Outlet, useSearchParams } from 'react-router-dom';
 
 export interface Result {
   created_at: string;
@@ -27,7 +27,12 @@ export interface Response {
   items: Result[];
 }
 
-export const PageContext = createContext(1);
+export interface pageContext {
+  page: number;
+  setPage: (page: number) => void;
+}
+
+export const PageContext = createContext<pageContext | null>(null);
 
 export default function App(): React.ReactNode {
   const [response, setResponse] = useState<Response>({
@@ -37,13 +42,10 @@ export default function App(): React.ReactNode {
   const [loading, setLoading] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState<number>(getPageFromURL);
-  const location = useLocation();
 
   useEffect(() => {
-    if (searchParams.get('page')) setPage(getPageFromURL);
-    if (!searchParams.get('page') && !location.pathname.includes('details'))
-      setSearchParams({ page: page.toString() });
-  }, [location]);
+    setSearchParams({ page: page.toString() });
+  }, [page]);
 
   function getPageFromURL() {
     return parseInt(searchParams.get('page') || '1');
@@ -59,7 +61,12 @@ export default function App(): React.ReactNode {
 
   return (
     <>
-      <PageContext.Provider value={page}>
+      <PageContext.Provider
+        value={{
+          page,
+          setPage,
+        }}
+      >
         <header className={'app-header'}>
           <h1>Search repository on GitHub</h1>
           <Search

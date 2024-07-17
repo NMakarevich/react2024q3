@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import './pagination.scss';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { PageContext } from '../../App.tsx';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { pageContext, PageContext } from '../../App.tsx';
 import { PER_PAGE } from '../../consts.tsx';
 
 interface Props {
@@ -9,11 +9,7 @@ interface Props {
 }
 
 export default function Pagination(props: Props): React.ReactNode {
-  const pageContext = useContext(PageContext);
-  const [searchParams, setSearchParam] = useSearchParams();
-  const [page, setPage] = useState<number>(
-    parseInt(searchParams.get('page') || pageContext.toString()),
-  );
+  const { page, setPage } = useContext(PageContext) as pageContext;
   const { totalCount } = props;
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,13 +17,11 @@ export default function Pagination(props: Props): React.ReactNode {
   function prevPage() {
     setPage(page - 1);
     if (location.pathname.includes('details')) navigate('/search');
-    setSearchParam({ page: (page - 1).toString() });
   }
 
   function nextPage() {
     setPage(page + 1);
     if (location.pathname.includes('details')) navigate('/search');
-    setSearchParam({ page: (page + 1).toString() });
   }
 
   function isLastPage() {

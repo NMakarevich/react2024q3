@@ -8,7 +8,7 @@ import { getDetailedCard } from '../../api.ts';
 
 export default function DetailedCard(): React.ReactNode {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState<boolean>(false);
   const [item, setItem] = useState<Result>();
   const location = useLocation();
@@ -28,7 +28,9 @@ export default function DetailedCard(): React.ReactNode {
   }
 
   function closeCard() {
+    const page = searchParams.get('page');
     navigate('..');
+    if (page) setSearchParams({ page });
   }
 
   return (
