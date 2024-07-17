@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 export function useLocalStorage(key: string) {
-  const [state, setState] = useState<string>(getDataFromLS);
+  const [ls, setState] = useState<string>(getDataFromLS);
 
   function getDataFromLS() {
     return localStorage.getItem(key) || '';
@@ -12,5 +12,5 @@ export function useLocalStorage(key: string) {
     localStorage.setItem(key, value);
   }
 
-  return { ls: state, updateLocalStorage };
+  return [ls, updateLocalStorage] as const;
 }

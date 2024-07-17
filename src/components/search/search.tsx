@@ -14,7 +14,7 @@ const SEARCH_TERM = 'search-term';
 
 export default function Search(props: Props): React.ReactNode {
   const { setLoading, sendResponse } = props;
-  const { ls, updateLocalStorage } = useLocalStorage(SEARCH_TERM);
+  const [ls, updateLocalStorage] = useLocalStorage(SEARCH_TERM);
   const [searchTerm, setSearchTerm] = useState(ls);
   const pageContext = useContext(PageContext);
 
