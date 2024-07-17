@@ -19,7 +19,7 @@ export interface Result {
     avatar_url: string;
     id: number;
     login: string;
-    url: string;
+    html_url: string;
   };
 }
 

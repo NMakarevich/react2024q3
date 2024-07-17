@@ -45,7 +45,10 @@ export function ResultsItem(props: Props): React.ReactNode {
             </a>
             <div className={'result-author'}>
               <h3 className={'result-author_title'}>Author:</h3>
-              <a className={'result-author_link link'} href={result.owner.url}>
+              <a
+                className={'result-author_link link'}
+                href={result.owner.html_url}
+              >
                 {result.owner.login}
               </a>
             </div>
