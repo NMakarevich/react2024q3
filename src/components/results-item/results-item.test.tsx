@@ -17,7 +17,7 @@ describe('ResultsItem', () => {
     const login = item.owner.login;
     const html_url = item.html_url;
     const name = item.name;
-    const url = item.owner.url;
+    const owner_url = item.owner.html_url;
     const stars = item.stargazers_count;
 
     const screenAvatarUrl = screen.getByAltText(login);
@@ -29,7 +29,7 @@ describe('ResultsItem', () => {
     expect(screenAvatarUrl.getAttribute('src')).toBe(avatar_url);
     expect(screenName).toBeTruthy();
     expect(screenNameURL).toBe(html_url);
-    expect(screenLogin.getAttribute('href')).toBe(url);
+    expect(screenLogin.getAttribute('href')).toBe(owner_url);
     expect(screenStars.textContent?.split('Stars: ')[1]).toBe(
       transformStars(stars),
     );
