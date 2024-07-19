@@ -5,7 +5,6 @@ import { responseDetailedCard } from '../../mock/mock.ts';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { BrowserRouter } from 'react-router-dom';
-import { expect } from 'vitest';
 
 const server = setupServer(
   http.get('https://api.github.com/repos/facebook/react', () => {
