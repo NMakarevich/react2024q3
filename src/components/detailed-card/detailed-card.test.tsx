@@ -18,7 +18,7 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 const snapshot = ` <div
-      class="card"
+      class="card theme-light"
     >
       <button
         class="card-close"
