@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ThemeContext, Response, IThemeContext } from '../../App.tsx';
+import { ThemeContext, Response } from '../../App.tsx';
 import { ResultsItem } from '../results-item/results-item.tsx';
 import './results-list.scss';
 import Pagination from '../pagination/pagination.tsx';
@@ -12,7 +12,7 @@ interface Props {
 
 export default function ResultsList(props: Props): React.ReactNode {
   const { response, loading } = props;
-  const { theme } = useContext(ThemeContext) as IThemeContext;
+  const { theme } = useContext(ThemeContext);
 
   return (
     <>

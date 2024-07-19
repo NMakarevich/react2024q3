@@ -38,9 +38,15 @@ export interface IThemeContext {
   setTheme: (theme: string) => void;
 }
 
-export const PageContext = createContext<IPageContext | null>(null);
+export const PageContext = createContext<IPageContext>({
+  page: 1,
+  setPage: (page: number) => page,
+});
 
-export const ThemeContext = createContext<IThemeContext | null>(null);
+export const ThemeContext = createContext<IThemeContext>({
+  theme: 'light',
+  setTheme: (theme: string) => theme,
+});
 
 export default function App(): React.ReactNode {
   const [response, setResponse] = useState<Response>({

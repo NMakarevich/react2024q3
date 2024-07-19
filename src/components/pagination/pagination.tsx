@@ -1,12 +1,7 @@
 import React, { useContext } from 'react';
 import './pagination.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
-import {
-  PageContext,
-  ThemeContext,
-  IPageContext,
-  IThemeContext,
-} from '../../App.tsx';
+import { PageContext, ThemeContext } from '../../App.tsx';
 import { PER_PAGE } from '../../consts.tsx';
 
 interface Props {
@@ -14,11 +9,11 @@ interface Props {
 }
 
 export default function Pagination(props: Props): React.ReactNode {
-  const { page, setPage } = useContext(PageContext) as IPageContext;
+  const { page, setPage } = useContext(PageContext);
   const { totalCount } = props;
   const navigate = useNavigate();
   const location = useLocation();
-  const { theme } = useContext(ThemeContext) as IThemeContext;
+  const { theme } = useContext(ThemeContext);
 
   function prevPage() {
     setPage(page - 1);

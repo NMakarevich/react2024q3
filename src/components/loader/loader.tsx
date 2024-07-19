@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 import './loader.scss';
-import { ThemeContext, IThemeContext } from '../../App.tsx';
+import { ThemeContext } from '../../App.tsx';
 
 interface Props {
   isLoading: boolean;
 }
 
 export default function Loader(props: Props): React.ReactNode {
-  const { theme } = useContext(ThemeContext) as IThemeContext;
+  const { theme } = useContext(ThemeContext);
   const { isLoading } = props;
 
   return (

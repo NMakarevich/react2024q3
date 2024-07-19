@@ -1,5 +1,5 @@
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { ThemeContext, Result, IThemeContext } from '../../App.tsx';
+import { ThemeContext, Result } from '../../App.tsx';
 import React, { useContext, useEffect, useState } from 'react';
 import './detailed-card.scss';
 import { transformStars } from '../../utils.ts';
@@ -12,7 +12,7 @@ export default function DetailedCard(): React.ReactNode {
   const [loading, setLoading] = useState<boolean>(false);
   const [item, setItem] = useState<Result>();
   const location = useLocation();
-  const { theme } = useContext(ThemeContext) as IThemeContext;
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     loadData().then(() => setLoading(false));
