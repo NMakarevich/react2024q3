@@ -1,32 +1,24 @@
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { ThemeContext, Result } from '../../App.tsx';
+import { ThemeContext } from '../../App.tsx';
 import React, { useContext, useEffect, useState } from 'react';
 import './detailed-card.scss';
 import { transformStars } from '../../utils.ts';
 import Loader from '../loader/loader.tsx';
-import { getDetailedCard } from '../../api.ts';
+import { useGetCardQuery } from '../../redux/slices/api.slice.ts';
 
 export default function DetailedCard(): React.ReactNode {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [item, setItem] = useState<Result>();
+  const [owner, setOwner] = useState(searchParams.get('owner') || '');
+  const [name, setName] = useState(searchParams.get('name') || '');
   const location = useLocation();
   const { theme } = useContext(ThemeContext);
+  const { data: item, isFetching } = useGetCardQuery({ owner, name });
 
   useEffect(() => {
-    loadData().then(() => setLoading(false));
+    setName(searchParams.get('name') || '');
+    setOwner(searchParams.get('owner') || '');
   }, [location]);
-
-  async function loadData() {
-    const owner = searchParams.get('owner');
-    const name = searchParams.get('name');
-    if (owner && name) {
-      setLoading(true);
-      const detailed = await getDetailedCard(owner, name);
-      setItem(detailed);
-    }
-  }
 
   function closeCard() {
     const page = searchParams.get('page');
@@ -36,8 +28,8 @@ export default function DetailedCard(): React.ReactNode {
 
   return (
     <>
-      {loading ? (
-        <Loader isLoading={loading} />
+      {isFetching ? (
+        <Loader isLoading={isFetching} />
       ) : (
         <div className={`card theme-${theme}`}>
           <button className="card-close" onClick={closeCard}>

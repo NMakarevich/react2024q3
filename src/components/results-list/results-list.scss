@@ -10,5 +10,10 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 15px
+  gap: 15px;
+}
+
+.with-flyout {
+  height: 60vh;
+  overflow: scroll;
 }

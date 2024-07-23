@@ -1,33 +1,26 @@
 import React from 'react';
-import { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, useContext, useState } from 'react';
 import {
   PageContext,
   ThemeContext,
   IPageContext,
-  Response,
   IThemeContext,
 } from '../../App.tsx';
 import './search.scss';
 import { useLocalStorage } from '../../hooks/useLocalStorage.tsx';
-import { getCards } from '../../api.ts';
 
 interface Props {
-  setLoading: (isLoading: boolean) => void;
-  sendResponse: (results: Response) => void;
+  getSearchTerm: (searchTerm: string) => void;
 }
 
 const SEARCH_TERM = 'search-term';
 
 export default function Search(props: Props): React.ReactNode {
-  const { setLoading, sendResponse } = props;
   const [ls, updateLocalStorage] = useLocalStorage(SEARCH_TERM);
   const [searchTerm, setSearchTerm] = useState(ls);
-  const { page, setPage } = useContext(PageContext) as IPageContext;
+  const { getSearchTerm } = props;
+  const { setPage } = useContext(PageContext) as IPageContext;
   const { theme } = useContext(ThemeContext) as IThemeContext;
-
-  useEffect(() => {
-    search().then(() => setLoading(false));
-  }, [page]);
 
   function handleInput(e: ChangeEvent) {
     let inputValue = '';
@@ -35,18 +28,12 @@ export default function Search(props: Props): React.ReactNode {
     setSearchTerm(inputValue);
   }
 
-  async function search() {
-    setLoading(true);
+  function search() {
     if (ls !== searchTerm) {
-      setPage(1);
       updateLocalStorage(searchTerm);
-      const results = await getCards(searchTerm, 1);
-      sendResponse(results);
-    } else {
-      const results = await getCards(searchTerm, page);
-      sendResponse(results);
+      setPage(1);
+      getSearchTerm(searchTerm);
     }
-    setLoading(false);
   }
 
   return (
