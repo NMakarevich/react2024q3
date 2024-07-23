@@ -1,0 +1,52 @@
+@use './../../scss/themes' as *;
+
+.flyout {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  color: var(--color);
+  font-size: 1.2rem;
+  background-color: var(--background-color);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+
+  &-controls {
+    display: flex;
+    gap: 10px;
+
+    &_download {
+      display: flex;
+      text-decoration: none;
+      color: var(--color);
+      padding: 5px;
+      background-color: var(--background-button);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+    }
+
+    &_download:hover {
+      box-shadow: 0 0 2px 2px var(--box-shadow);
+      cursor: pointer;
+    }
+
+    &_unselect {
+      padding: 5px;
+      color: var(--color);
+      background-color: var(--background-button);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      font-size: 1.2rem;
+    }
+
+    &_unselect:hover {
+      box-shadow: 0 0 2px 2px var(--box-shadow);
+      cursor: pointer;
+    }
+  }
+}

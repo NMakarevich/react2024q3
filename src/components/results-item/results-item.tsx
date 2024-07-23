@@ -1,8 +1,15 @@
 import { PageContext, ThemeContext, Result } from '../../App.tsx';
 import './results-item.scss';
 import { useNavigate } from 'react-router-dom';
-import React, { useContext } from 'react';
+import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { transformStars } from '../../utils.ts';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectItemsIds } from '../../redux/slices/selected-items.slice.ts';
+import { AppDispatch } from '../../redux/store.ts';
+import {
+  addItem,
+  removeItem,
+} from '../../redux/slices/selected-items.slice.ts';
 
 interface Props {
   result: Result;
@@ -13,11 +20,26 @@ export function ResultsItem(props: Props): React.ReactNode {
   const navigate = useNavigate();
   const { page } = useContext(PageContext);
   const { theme } = useContext(ThemeContext);
+  const selectedItemsIds = useSelector(selectItemsIds);
+  const dispatch: AppDispatch = useDispatch();
+  const [isSelected, setIsSelected] = useState<boolean>(false);
 
-  function navigateTo() {
-    navigate(
-      `/search/details?owner=${result.owner.login}&name=${result.name}&page=${page}`,
-    );
+  useEffect(() => {
+    setIsSelected(selectedItemsIds.includes(result.id));
+  }, [selectedItemsIds]);
+
+  function navigateTo(event: React.MouseEvent<HTMLElement>) {
+    if (event.target instanceof HTMLDivElement)
+      navigate(
+        `/search/details?owner=${result.owner.login}&name=${result.name}&page=${page}`,
+      );
+  }
+
+  function toggleSelect(event: ChangeEvent<HTMLInputElement>) {
+    event.stopPropagation();
+    event.target.checked
+      ? dispatch(addItem(result))
+      : dispatch(removeItem(result.id));
   }
 
   return (
@@ -53,6 +75,13 @@ export function ResultsItem(props: Props): React.ReactNode {
             Stars: {transformStars(result.stargazers_count)}
           </span>
         </div>
+        <input
+          type="checkbox"
+          name="selected"
+          className="selected-item"
+          checked={isSelected}
+          onChange={toggleSelect}
+        />
       </div>
     </>
   );

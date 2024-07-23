@@ -1,6 +1,7 @@
 @use './../../scss/themes' as *;
 
 .result {
+  position: relative;
   display: flex;
   gap: 10px;
   width: 300px;
@@ -48,6 +49,13 @@
       font-size: inherit;
     }
   }
+}
+
+.selected-item {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  cursor: pointer;
 }
 
 .link {
