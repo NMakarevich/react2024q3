@@ -4,6 +4,8 @@ import ResultsList from './results-list.tsx';
 import { expect } from 'vitest';
 import { BrowserRouter } from 'react-router-dom';
 import { Response } from '../../App.tsx';
+import { Provider } from 'react-redux';
+import { store } from '../../redux/store.ts';
 
 describe('ResultsList Component', () => {
   it('Must render specified number of results', () => {
@@ -11,7 +13,9 @@ describe('ResultsList Component', () => {
     const itemsNumber = mock.items.length;
     render(
       <BrowserRouter>
-        <ResultsList response={mock} loading={false} />
+        <Provider store={store}>
+          <ResultsList response={mock} />
+        </Provider>
       </BrowserRouter>,
     );
     const results = screen.getAllByLabelText('result-item');
@@ -21,7 +25,9 @@ describe('ResultsList Component', () => {
     const mock: Response = { total_count: 0, items: [] };
     render(
       <BrowserRouter>
-        <ResultsList response={mock} loading={false} />
+        <Provider store={store}>
+          <ResultsList response={mock} />
+        </Provider>
       </BrowserRouter>,
     );
     const message = screen.getByText('No results found.');

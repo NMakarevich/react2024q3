@@ -5,6 +5,8 @@ import { responseDetailedCard } from '../../mock/mock.ts';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from '../../redux/store.ts';
 
 const server = setupServer(
   http.get('https://api.github.com/repos/facebook/react', () => {
@@ -125,7 +127,9 @@ describe('DetailedCard', () => {
     window.history.pushState({}, '', url);
     render(
       <BrowserRouter>
-        <DetailedCard />
+        <Provider store={store}>
+          <DetailedCard />
+        </Provider>
       </BrowserRouter>,
     );
     const loading = screen.getByText('Loading...');
@@ -137,7 +141,9 @@ describe('DetailedCard', () => {
     window.history.pushState({}, '', url);
     render(
       <BrowserRouter>
-        <DetailedCard />
+        <Provider store={store}>
+          <DetailedCard />
+        </Provider>
       </BrowserRouter>,
     );
 

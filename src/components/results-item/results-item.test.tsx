@@ -4,13 +4,17 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { expect } from 'vitest';
 import { transformStars } from '../../utils.ts';
+import { Provider } from 'react-redux';
+import { store } from '../../redux/store.ts';
 
 describe('ResultsItem', () => {
   it('Results item should render correctly', () => {
     const item = response.items[0];
     render(
       <BrowserRouter>
-        <ResultsItem result={item} />
+        <Provider store={store}>
+          <ResultsItem result={item} />
+        </Provider>
       </BrowserRouter>,
     );
     const avatar_url = item.owner.avatar_url;
