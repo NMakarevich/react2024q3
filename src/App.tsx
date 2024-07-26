@@ -11,6 +11,7 @@ import {
   startLoading,
   finishLoading,
   updatePage,
+  addCards,
 } from './redux/slices/cards.slice.ts';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from './redux/store.ts';
@@ -73,6 +74,7 @@ export default function App(): React.ReactNode {
 
   useEffect(() => {
     isFetching ? dispatch(startLoading()) : dispatch(finishLoading());
+    if (!isFetching && res) dispatch(addCards(res.items));
   }, [isFetching]);
 
   useEffect(() => {
