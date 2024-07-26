@@ -6,12 +6,14 @@ export interface CardsState {
   isLoading: boolean;
   page: number;
   cards: Result[];
+  detailedCard: Result | undefined;
 }
 
 const initialState: CardsState = {
   isLoading: false,
   page: 1,
   cards: [],
+  detailedCard: undefined,
 };
 
 export const cardsSlice = createSlice({
@@ -30,12 +32,24 @@ export const cardsSlice = createSlice({
     addCards: (state, action) => {
       state.cards = [...action.payload];
     },
+    addDetailedCard: (state, action) => {
+      state.detailedCard = action.payload;
+    },
+    deleteDetailedCard: (state) => {
+      state.detailedCard = undefined;
+    },
   },
 });
 
 export const selectLoading = (state: RootState) => state.cards.isLoading;
 
-export const { startLoading, finishLoading, updatePage, addCards } =
-  cardsSlice.actions;
+export const {
+  startLoading,
+  finishLoading,
+  updatePage,
+  addCards,
+  addDetailedCard,
+  deleteDetailedCard,
+} = cardsSlice.actions;
 
 export default cardsSlice.reducer;

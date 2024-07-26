@@ -5,6 +5,12 @@ import './detailed-card.scss';
 import { transformStars } from '../../utils.ts';
 import Loader from '../loader/loader.tsx';
 import { useGetCardQuery } from '../../redux/slices/api.slice.ts';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../redux/store.ts';
+import {
+  addDetailedCard,
+  deleteDetailedCard,
+} from '../../redux/slices/cards.slice.ts';
 
 export default function DetailedCard(): React.ReactNode {
   const navigate = useNavigate();
@@ -14,16 +20,22 @@ export default function DetailedCard(): React.ReactNode {
   const location = useLocation();
   const { theme } = useContext(ThemeContext);
   const { data: item, isFetching } = useGetCardQuery({ owner, name });
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     setName(searchParams.get('name') || '');
     setOwner(searchParams.get('owner') || '');
   }, [location]);
 
+  useEffect(() => {
+    if (!isFetching && item) dispatch(addDetailedCard(item));
+  }, [isFetching]);
+
   function closeCard() {
     const page = searchParams.get('page');
     navigate('..');
     if (page) setSearchParams({ page });
+    dispatch(deleteDetailedCard());
   }
 
   return (
