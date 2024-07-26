@@ -1,0 +1,21 @@
+@use 'colors' as *;
+
+.theme-light {
+  --background-color: #{$light-background};
+  --background-button: #{$light-button};
+  --color: #{$light-text};
+  --box-shadow: #{$light-box-shadow};
+  --border: #{$light-border};
+  --toggle: #{$light-toggle};
+  --link: #{$light-link};
+}
+
+.theme-dark {
+  --background-color: #{$dark-background};
+  --background-button: #{$dark-button};
+  --color: #{$dark-text};
+  --box-shadow: #{$dark-box-shadow};
+  --border: #{$dark-border};
+  --toggle: #{$dark-toggle};
+  --link: #{$dark-link};
+}
