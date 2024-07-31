@@ -42,7 +42,7 @@ export function Flyout(): React.ReactNode {
           <a
             className="flyout-controls_download"
             href={url}
-            download="file.csv"
+            download={`${selectedItemsAmount}_repositories.csv`}
           >
             Download
           </a>
