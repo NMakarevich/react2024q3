@@ -1,6 +1,4 @@
 import { PageContext, ThemeContext, Result } from '../../App.tsx';
-import './results-item.scss';
-import { useNavigate } from 'react-router-dom';
 import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { transformStars } from '../../utils.ts';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +8,7 @@ import {
   addItem,
   removeItem,
 } from '../../redux/slices/selected-items.slice.ts';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   result: Result;
@@ -17,7 +16,7 @@ interface Props {
 
 export function ResultsItem(props: Props): React.ReactNode {
   const { result } = props;
-  const navigate = useNavigate();
+  const router = useRouter();
   const { page } = useContext(PageContext);
   const { theme } = useContext(ThemeContext);
   const selectedItemsIds = useSelector(selectItemsIds);
@@ -30,7 +29,7 @@ export function ResultsItem(props: Props): React.ReactNode {
 
   function navigateTo(event: React.MouseEvent<HTMLElement>) {
     if (event.target instanceof HTMLDivElement)
-      navigate(
+      router.push(
         `/search/details?owner=${result.owner.login}&name=${result.name}&page=${page}`,
       );
   }

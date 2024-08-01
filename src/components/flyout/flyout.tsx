@@ -4,7 +4,6 @@ import {
   selectItems,
   selectItemsAmount,
 } from '../../redux/slices/selected-items.slice.ts';
-import './flyout.scss';
 import { AppDispatch } from '../../redux/store.ts';
 import { unselectAll } from '../../redux/slices/selected-items.slice.ts';
 import { ThemeContext } from '../../App.tsx';

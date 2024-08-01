@@ -6,8 +6,8 @@ import {
   IPageContext,
   IThemeContext,
 } from '../../App.tsx';
-import './search.scss';
 import { useLocalStorage } from '../../hooks/useLocalStorage.tsx';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   getSearchTerm: (searchTerm: string) => void;
@@ -21,6 +21,7 @@ export default function Search(props: Props): React.ReactNode {
   const { getSearchTerm } = props;
   const { setPage } = useContext(PageContext) as IPageContext;
   const { theme } = useContext(ThemeContext) as IThemeContext;
+  const router = useRouter();
 
   function handleInput(e: ChangeEvent) {
     let inputValue = '';
@@ -32,6 +33,7 @@ export default function Search(props: Props): React.ReactNode {
     if (ls !== searchTerm) {
       updateLocalStorage(searchTerm);
       setPage(1);
+      router.push('/search?page=1');
       getSearchTerm(searchTerm);
     }
   }

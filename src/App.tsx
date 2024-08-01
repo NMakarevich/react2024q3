@@ -1,8 +1,6 @@
-import React, { createContext, useEffect, useState } from 'react';
-import './App.scss';
+import React, { createContext, ReactNode, useEffect, useState } from 'react';
 import Search from './components/search/search.tsx';
 import ResultsList from './components/results-list/results-list.tsx';
-import { Outlet, useSearchParams } from 'react-router-dom';
 import { ToggleTheme } from './components/toogle-theme/toggle-theme.tsx';
 import { useGetCardsQuery } from './redux/slices/api.slice.ts';
 import { useLocalStorage } from './hooks/useLocalStorage.tsx';
@@ -16,6 +14,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from './redux/store.ts';
 import { Flyout } from './components/flyout/flyout.tsx';
+import { useSearchParams } from 'next/navigation';
 
 export interface Result {
   created_at: string;
@@ -60,8 +59,12 @@ export const ThemeContext = createContext<IThemeContext>({
   setTheme: (theme: string) => theme,
 });
 
-export default function App(): React.ReactNode {
-  const [searchParams, setSearchParams] = useSearchParams();
+export default function App({
+  children,
+}: {
+  children: ReactNode;
+}): React.ReactNode {
+  const searchParams = useSearchParams();
   const [page, setPage] = useState<number>(getPageFromURL);
   const [theme, setTheme] = useState('light');
   const [ls] = useLocalStorage('search-term');
@@ -78,7 +81,10 @@ export default function App(): React.ReactNode {
   }, [isFetching]);
 
   useEffect(() => {
-    setSearchParams({ page: page.toString() });
+    setPage(parseInt(searchParams.get('page') || '1'));
+  }, [searchParams]);
+
+  useEffect(() => {
     dispatch(updatePage(page));
   }, [page]);
 
@@ -102,7 +108,7 @@ export default function App(): React.ReactNode {
           </header>
           <main className={`app-main theme-${theme}`}>
             {res && <ResultsList response={res}></ResultsList>}
-            <Outlet />
+            {children}
             <Flyout />
           </main>
         </ThemeContext.Provider>

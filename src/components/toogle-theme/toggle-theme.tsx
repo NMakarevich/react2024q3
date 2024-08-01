@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react';
 import { ThemeContext, IThemeContext } from '../../App.tsx';
-import './toggle-theme.scss';
 
 export function ToggleTheme(): React.ReactNode {
   const { theme, setTheme } = useContext(ThemeContext) as IThemeContext;

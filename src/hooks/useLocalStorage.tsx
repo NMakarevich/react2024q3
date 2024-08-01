@@ -4,12 +4,17 @@ export function useLocalStorage(key: string) {
   const [ls, setState] = useState<string>(getDataFromLS);
 
   function getDataFromLS() {
-    return localStorage.getItem(key) || '';
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem(key) || '';
+    }
+    return '';
   }
 
   function updateLocalStorage(value: string) {
-    setState(value);
-    localStorage.setItem(key, value);
+    if (typeof window !== 'undefined') {
+      setState(value);
+      localStorage.setItem(key, value);
+    }
   }
 
   return [ls, updateLocalStorage] as const;

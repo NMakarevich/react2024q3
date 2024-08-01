@@ -1,7 +1,5 @@
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { ThemeContext } from '../../App.tsx';
 import React, { useContext, useEffect, useState } from 'react';
-import './detailed-card.scss';
 import { transformStars } from '../../utils.ts';
 import Loader from '../loader/loader.tsx';
 import { useGetCardQuery } from '../../redux/slices/api.slice.ts';
@@ -11,13 +9,13 @@ import {
   addDetailedCard,
   deleteDetailedCard,
 } from '../../redux/slices/cards.slice.ts';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function DetailedCard(): React.ReactNode {
-  const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [owner, setOwner] = useState(searchParams.get('owner') || '');
   const [name, setName] = useState(searchParams.get('name') || '');
-  const location = useLocation();
   const { theme } = useContext(ThemeContext);
   const { data: item, isFetching } = useGetCardQuery({ owner, name });
   const dispatch = useDispatch<AppDispatch>();
@@ -25,7 +23,7 @@ export default function DetailedCard(): React.ReactNode {
   useEffect(() => {
     setName(searchParams.get('name') || '');
     setOwner(searchParams.get('owner') || '');
-  }, [location]);
+  }, [searchParams]);
 
   useEffect(() => {
     if (!isFetching && item) dispatch(addDetailedCard(item));
@@ -33,8 +31,9 @@ export default function DetailedCard(): React.ReactNode {
 
   function closeCard() {
     const page = searchParams.get('page');
-    navigate('..');
-    if (page) setSearchParams({ page });
+    if (page) {
+      router.push(`/search?page=${page}`);
+    }
     dispatch(deleteDetailedCard());
   }
 

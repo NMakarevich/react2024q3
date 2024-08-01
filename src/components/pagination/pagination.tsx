@@ -1,8 +1,7 @@
-import React, { useContext, useState } from 'react';
-import './pagination.scss';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useContext } from 'react';
 import { PageContext, ThemeContext } from '../../App.tsx';
 import { PER_PAGE } from '../../consts.tsx';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   totalCount: number;
@@ -10,38 +9,34 @@ interface Props {
 
 export default function Pagination(props: Props): React.ReactNode {
   const { page, setPage } = useContext(PageContext);
-  const [currentPage, setCurrentPage] = useState(page);
   const { totalCount } = props;
-  const navigate = useNavigate();
-  const location = useLocation();
+  const router = useRouter();
   const { theme } = useContext(ThemeContext);
 
   function prevPage() {
     setPage(page - 1);
-    setCurrentPage(currentPage - 1);
-    if (location.pathname.includes('details')) navigate('/search');
+    router.push(`/search?page=${page - 1}`);
   }
 
   function nextPage() {
     setPage(page + 1);
-    setCurrentPage(currentPage + 1);
-    if (location.pathname.includes('details')) navigate('/search');
+    router.push(`/search?page=${page + 1}`);
   }
 
   function isLastPage() {
-    return totalCount <= currentPage * PER_PAGE;
+    return totalCount <= page * PER_PAGE;
   }
 
   return (
     <div className={`pagination theme-${theme}`}>
       <button
         className="pagination-prev pagination-btn"
-        disabled={currentPage === 1}
+        disabled={page === 1}
         onClick={prevPage}
       >
         Prev page
       </button>
-      <span className="pagination-page">{`${currentPage} of ${Math.ceil(totalCount / PER_PAGE)}`}</span>
+      <span className="pagination-page">{`${page} of ${Math.ceil(totalCount / PER_PAGE)}`}</span>
       <button
         className="pagination-next pagination-btn"
         disabled={isLastPage()}

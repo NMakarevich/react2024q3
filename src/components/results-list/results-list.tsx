@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { ThemeContext, Response } from '../../App.tsx';
 import { ResultsItem } from '../results-item/results-item.tsx';
-import './results-list.scss';
 import Pagination from '../pagination/pagination.tsx';
 import Loader from '../loader/loader.tsx';
 import { useSelector } from 'react-redux';

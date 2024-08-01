@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import './loader.scss';
 import { ThemeContext } from '../../App.tsx';
 
 interface Props {
