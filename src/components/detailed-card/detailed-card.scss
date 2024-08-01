@@ -49,12 +49,12 @@
 
   &-author {
     display: flex;
-    align-items: end;
+    align-items: flex-end;
     gap : 10px
   }
 
   &-stars {
-    align-self: start;
+    align-self: flex-start;
     margin-left: auto;
     text-align: end;
   }
