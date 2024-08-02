@@ -25,7 +25,7 @@ export default tseslint.config(
       globals: {
         ...globals.browser,
       },
-      parserOptions: ['tsconfig.json', 'tsconfig.node.json'],
+      parserOptions: ['tsconfig.json'],
     },
   },
   {
@@ -33,7 +33,7 @@ export default tseslint.config(
     rules: {
       ...eslintConfigPrettier.rules,
       '@typescript-eslint/no-explicit-any': 'error',
-      'react-compiler/react-compiler': 'error'
+      'react-compiler/react-compiler': 'error',
     },
   },
 );
