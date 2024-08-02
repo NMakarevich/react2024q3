@@ -3,15 +3,15 @@ import Search from './components/search/search.tsx';
 import ResultsList from './components/results-list/results-list.tsx';
 import { ToggleTheme } from './components/toogle-theme/toggle-theme.tsx';
 import { useGetCardsQuery } from './redux/slices/api.slice.ts';
-import { useLocalStorage } from './hooks/useLocalStorage.tsx';
 
 import {
   startLoading,
   finishLoading,
   updatePage,
   addCards,
+  selectSearchTerm,
 } from './redux/slices/cards.slice.ts';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from './redux/store.ts';
 import { Flyout } from './components/flyout/flyout.tsx';
 import { useSearchParams } from 'next/navigation';
@@ -67,8 +67,7 @@ export default function App({
   const searchParams = useSearchParams();
   const [page, setPage] = useState<number>(getPageFromURL);
   const [theme, setTheme] = useState('light');
-  const [ls] = useLocalStorage('search-term');
-  const [searchTerm, setSearchTerm] = useState(ls);
+  const searchTerm = useSelector(selectSearchTerm);
   const { data: res, isFetching } = useGetCardsQuery({
     searchTerm,
     page: page,
@@ -103,7 +102,7 @@ export default function App({
         <ThemeContext.Provider value={{ theme, setTheme }}>
           <header className={`app-header theme-${theme}`}>
             <h1>Search repository on GitHub</h1>
-            <Search getSearchTerm={setSearchTerm}></Search>
+            <Search></Search>
             <ToggleTheme />
           </header>
           <main className={`app-main theme-${theme}`}>

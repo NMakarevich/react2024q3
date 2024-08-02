@@ -1,5 +1,5 @@
-import React from 'react';
-import { ChangeEvent, useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { ChangeEvent, useContext } from 'react';
 import {
   PageContext,
   ThemeContext,
@@ -8,33 +8,40 @@ import {
 } from '../../App.tsx';
 import { useLocalStorage } from '../../hooks/useLocalStorage.tsx';
 import { useRouter } from 'next/navigation';
-
-interface Props {
-  getSearchTerm: (searchTerm: string) => void;
-}
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '../../redux/store.ts';
+import {
+  selectSearchTerm,
+  setSearchTerm,
+} from '../../redux/slices/cards.slice.ts';
 
 const SEARCH_TERM = 'search-term';
 
-export default function Search(props: Props): React.ReactNode {
+export default function Search(): React.ReactNode {
   const [ls, updateLocalStorage] = useLocalStorage(SEARCH_TERM);
-  const [searchTerm, setSearchTerm] = useState(ls);
-  const { getSearchTerm } = props;
+  const [searchT, setSearchT] = useState(ls);
   const { setPage } = useContext(PageContext) as IPageContext;
   const { theme } = useContext(ThemeContext) as IThemeContext;
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
+  const searchTerm = useSelector(selectSearchTerm);
+
+  useEffect(() => {
+    dispatch(setSearchTerm(ls));
+  }, []);
 
   function handleInput(e: ChangeEvent) {
     let inputValue = '';
     if (e.target instanceof HTMLInputElement) inputValue = e.target.value;
-    setSearchTerm(inputValue);
+    setSearchT(inputValue);
   }
 
   function search() {
-    if (ls !== searchTerm) {
-      updateLocalStorage(searchTerm);
+    if (ls !== searchT) {
+      updateLocalStorage(searchT);
       setPage(1);
       router.push('/search?page=1');
-      getSearchTerm(searchTerm);
+      dispatch(setSearchTerm(searchT));
     }
   }
 

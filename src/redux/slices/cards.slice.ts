@@ -7,6 +7,7 @@ export interface CardsState {
   page: number;
   cards: Result[];
   detailedCard: Result | undefined;
+  searchTerm: string;
 }
 
 const initialState: CardsState = {
@@ -14,6 +15,7 @@ const initialState: CardsState = {
   page: 1,
   cards: [],
   detailedCard: undefined,
+  searchTerm: '',
 };
 
 export const cardsSlice = createSlice({
@@ -38,10 +40,14 @@ export const cardsSlice = createSlice({
     deleteDetailedCard: (state) => {
       state.detailedCard = undefined;
     },
+    setSearchTerm: (state, action) => {
+      state.searchTerm = action.payload;
+    },
   },
 });
 
 export const selectLoading = (state: RootState) => state.cards.isLoading;
+export const selectSearchTerm = (state: RootState) => state.cards.searchTerm;
 
 export const {
   startLoading,
@@ -50,6 +56,7 @@ export const {
   addCards,
   addDetailedCard,
   deleteDetailedCard,
+  setSearchTerm,
 } = cardsSlice.actions;
 
 export default cardsSlice.reducer;
