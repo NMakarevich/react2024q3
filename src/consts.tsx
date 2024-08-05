@@ -3,4 +3,6 @@ export const SECOND_URL =
   'https://api.github.com/search/repositories?q=a&order=asc';
 export const REPO_URL = 'https://api.github.com/repos';
 
-export const PER_PAGE = 24;
+export const PER_PAGE = 16;
+
+export const SEARCH_TERM = 'search-term';

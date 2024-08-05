@@ -1,4 +1,3 @@
-import { PageContext, ThemeContext, Result } from '../../App.tsx';
 import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { transformStars } from '../../utils.ts';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +7,9 @@ import {
   addItem,
   removeItem,
 } from '../../redux/slices/selected-items.slice.ts';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Result } from '../../interfaces.ts';
+import { ThemeContext } from '../../providers/theme-provider.tsx';
 
 interface Props {
   result: Result;
@@ -17,7 +18,7 @@ interface Props {
 export function ResultsItem(props: Props): React.ReactNode {
   const { result } = props;
   const router = useRouter();
-  const { page } = useContext(PageContext);
+  const searchParams = useSearchParams();
   const { theme } = useContext(ThemeContext);
   const selectedItemsIds = useSelector(selectItemsIds);
   const dispatch: AppDispatch = useDispatch();
@@ -28,10 +29,12 @@ export function ResultsItem(props: Props): React.ReactNode {
   }, [selectedItemsIds]);
 
   function navigateTo(event: React.MouseEvent<HTMLElement>) {
-    if (event.target instanceof HTMLDivElement)
-      router.push(
-        `/search/details?owner=${result.owner.login}&name=${result.name}&page=${page}`,
-      );
+    if (event.target instanceof HTMLDivElement) {
+      const params = new URLSearchParams(searchParams);
+      params.set('owner', result.owner.login);
+      params.set('name', result.name);
+      router.push(`/search/details?${params.toString()}`);
+    }
   }
 
   function toggleSelect(event: ChangeEvent<HTMLInputElement>) {

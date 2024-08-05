@@ -1,11 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store.ts';
-import { Result } from '../../App.tsx';
+import { Result } from '../../interfaces.ts';
 
 export interface CardsState {
   isLoading: boolean;
   page: number;
-  cards: Result[];
+  items: Result[];
+  totalCount: number;
   detailedCard: Result | undefined;
   searchTerm: string;
 }
@@ -13,7 +14,8 @@ export interface CardsState {
 const initialState: CardsState = {
   isLoading: false,
   page: 1,
-  cards: [],
+  items: [],
+  totalCount: 0,
   detailedCard: undefined,
   searchTerm: '',
 };
@@ -32,7 +34,8 @@ export const cardsSlice = createSlice({
       state.page = action.payload;
     },
     addCards: (state, action) => {
-      state.cards = [...action.payload];
+      state.items = [...action.payload.items];
+      state.totalCount = action.payload.total_count;
     },
     addDetailedCard: (state, action) => {
       state.detailedCard = action.payload;
@@ -48,6 +51,20 @@ export const cardsSlice = createSlice({
 
 export const selectLoading = (state: RootState) => state.cards.isLoading;
 export const selectSearchTerm = (state: RootState) => state.cards.searchTerm;
+const selectCards = (state: RootState) => state.cards.items;
+export const selectTotalCount = (state: RootState) => state.cards.totalCount;
+export const selectResponse = createSelector(
+  selectCards,
+  selectTotalCount,
+  (cards, totalCount) => {
+    return {
+      items: [...cards],
+      total_count: totalCount,
+    };
+  },
+);
+export const selectDetailedCard = (state: RootState) =>
+  state.cards.detailedCard;
 
 export const {
   startLoading,

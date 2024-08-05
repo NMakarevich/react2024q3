@@ -12,7 +12,16 @@ import '../components/search/search.scss';
 import '../components/toogle-theme/toggle-theme.scss';
 import '../components/not-found/not-found.scss';
 import '../components/detailed-card/detailed-card.scss';
+import { store } from '../redux/store.ts';
+import { Provider } from 'react-redux';
+import RootLayout from './rootLayout.tsx';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+    <Provider store={store}>
+      <RootLayout>
+        <Component {...pageProps} />
+      </RootLayout>
+    </Provider>
+  );
 }

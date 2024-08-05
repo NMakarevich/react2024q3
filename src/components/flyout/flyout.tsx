@@ -6,7 +6,7 @@ import {
 } from '../../redux/slices/selected-items.slice.ts';
 import { AppDispatch } from '../../redux/store.ts';
 import { unselectAll } from '../../redux/slices/selected-items.slice.ts';
-import { ThemeContext } from '../../App.tsx';
+import { ThemeContext } from '../../providers/theme-provider.tsx';
 
 export function Flyout(): React.ReactNode {
   const [url, setUrl] = useState('');

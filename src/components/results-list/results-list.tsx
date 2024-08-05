@@ -1,21 +1,20 @@
 import React, { useContext } from 'react';
-import { ThemeContext, Response } from '../../App.tsx';
 import { ResultsItem } from '../results-item/results-item.tsx';
 import Pagination from '../pagination/pagination.tsx';
 import Loader from '../loader/loader.tsx';
 import { useSelector } from 'react-redux';
-import { selectLoading } from '../../redux/slices/cards.slice.ts';
+import {
+  selectLoading,
+  selectResponse,
+} from '../../redux/slices/cards.slice.ts';
 import { selectItemsAmount } from '../../redux/slices/selected-items.slice.ts';
+import { ThemeContext } from '../../providers/theme-provider.tsx';
 
-interface Props {
-  response: Response;
-}
-
-export default function ResultsList(props: Props): React.ReactNode {
-  const { response } = props;
+export default function ResultsList(): React.ReactNode {
   const { theme } = useContext(ThemeContext);
   const loading = useSelector(selectLoading);
   const itemsAmount = useSelector(selectItemsAmount);
+  const response = useSelector(selectResponse);
 
   return (
     <>
@@ -23,19 +22,17 @@ export default function ResultsList(props: Props): React.ReactNode {
         <Loader isLoading={loading} />
       ) : (
         <div className={`container theme-${theme}`}>
-          {response?.items?.length ? (
-            <Pagination totalCount={response.total_count} />
-          ) : (
-            ''
-          )}
+          {response?.items?.length ? <Pagination /> : ''}
           <div
             className={`results-container ${itemsAmount ? 'with-flyout' : ''}`}
           >
-            {response.items.length
-              ? response.items.map((item) => (
-                  <ResultsItem result={item} key={item.id}></ResultsItem>
-                ))
-              : 'No results found.'}
+            {response.total_count !== 0 ? (
+              response.items.map((item) => (
+                <ResultsItem result={item} key={item.id}></ResultsItem>
+              ))
+            ) : (
+              <span className="not-found">No results found.</span>
+            )}
           </div>
         </div>
       )}

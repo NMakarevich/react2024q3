@@ -1,4 +1,4 @@
-import { Result } from '../App.tsx';
+import { Result } from '../interfaces.ts';
 
 export const responseDetailedCard: Result = {
   id: 10270250,
@@ -8,7 +8,7 @@ export const responseDetailedCard: Result = {
     login: 'facebook',
     id: 69631,
     avatar_url: 'https://avatars.githubusercontent.com/u/69631?v=4',
-    url: 'https://api.github.com/users/facebook',
+    html_url: 'https://api.github.com/users/facebook',
   },
   html_url: 'https://github.com/facebook/react',
   description: 'The library for web and native user interfaces.',

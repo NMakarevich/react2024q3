@@ -1,12 +1,52 @@
-import { store } from '../../redux/store.ts';
-import { Provider } from 'react-redux';
-import App from '../../App.tsx';
-import { ReactNode } from 'react';
+import { AppDispatch } from '../../redux/store.ts';
+import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { BASE_URL, PER_PAGE } from '../../consts.tsx';
+import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import ResultsList from '../../components/results-list/results-list.tsx';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { addCards } from '../../redux/slices/cards.slice.ts';
+import { Response } from '../../interfaces.ts';
 
-export default function SearchPage({ children }: { children: ReactNode }) {
-  return (
-    <Provider store={store}>
-      <App>{children}</App>
-    </Provider>
+export const getServerSideProps = (async (context) => {
+  const { page, q } = context.query;
+  if (!q) {
+    const res: Response = { total_count: 0, items: [] };
+    return { props: { res } };
+  }
+  const response = await fetch(
+    `${BASE_URL}?q=${q}&page=${page}&per_page=${PER_PAGE}`,
   );
+  const res: Response = await response.json();
+  return { props: { res } };
+}) satisfies GetServerSideProps<{ res: Response }>;
+
+export default function SearchPage({
+  res,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    params.set('q', getSearchTerm() || '');
+    params.set('page', getPageFromURL());
+    router.push(`${pathname}?${params.toString()}`);
+  }, []);
+
+  useEffect(() => {
+    if (res && res.items.length) dispatch(addCards(res));
+  }, [res]);
+
+  function getPageFromURL() {
+    return searchParams.get('page') || '1';
+  }
+
+  function getSearchTerm() {
+    return searchParams.get('q');
+  }
+
+  return <ResultsList></ResultsList>;
 }

@@ -1,33 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { ChangeEvent, useContext } from 'react';
-import {
-  PageContext,
-  ThemeContext,
-  IPageContext,
-  IThemeContext,
-} from '../../App.tsx';
-import { useLocalStorage } from '../../hooks/useLocalStorage.tsx';
-import { useRouter } from 'next/navigation';
-import { useDispatch, useSelector } from 'react-redux';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store.ts';
-import {
-  selectSearchTerm,
-  setSearchTerm,
-} from '../../redux/slices/cards.slice.ts';
-
-const SEARCH_TERM = 'search-term';
+import { setSearchTerm } from '../../redux/slices/cards.slice.ts';
+import { ThemeContext } from '../../providers/theme-provider.tsx';
 
 export default function Search(): React.ReactNode {
-  const [ls, updateLocalStorage] = useLocalStorage(SEARCH_TERM);
-  const [searchT, setSearchT] = useState(ls);
-  const { setPage } = useContext(PageContext) as IPageContext;
-  const { theme } = useContext(ThemeContext) as IThemeContext;
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [searchTerm, setSearchT] = useState(getSearchTerm);
+  const { theme } = useContext(ThemeContext);
   const dispatch = useDispatch<AppDispatch>();
-  const searchTerm = useSelector(selectSearchTerm);
 
   useEffect(() => {
-    dispatch(setSearchTerm(ls));
+    dispatch(setSearchTerm(searchTerm));
   }, []);
 
   function handleInput(e: ChangeEvent) {
@@ -36,12 +23,17 @@ export default function Search(): React.ReactNode {
     setSearchT(inputValue);
   }
 
+  function getSearchTerm() {
+    return searchParams.get('q');
+  }
+
   function search() {
-    if (ls !== searchT) {
-      updateLocalStorage(searchT);
-      setPage(1);
-      router.push('/search?page=1');
-      dispatch(setSearchTerm(searchT));
+    if (getSearchTerm() !== searchTerm) {
+      const params = new URLSearchParams();
+      params.set('q', searchTerm || '');
+      params.set('page', '1');
+      router.push(`/search?${params.toString()}`);
+      dispatch(setSearchTerm(searchTerm));
     }
   }
 
@@ -53,7 +45,7 @@ export default function Search(): React.ReactNode {
           type="text"
           name="search"
           aria-label="search-input"
-          defaultValue={searchTerm}
+          defaultValue={searchTerm || ''}
           onChange={handleInput}
         />
         <button className={'search-button'} type="button" onClick={search}>
