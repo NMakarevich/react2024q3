@@ -1,20 +1,22 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { PER_PAGE } from '../../consts.tsx';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ThemeContext } from '../../providers/theme-provider.tsx';
-import { useSelector } from 'react-redux';
-import { selectTotalCount } from '../../redux/slices/cards.slice.ts';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectPage,
+  selectTotalCount,
+  updatePage,
+} from '../../redux/slices/cards.slice.ts';
+import { AppDispatch } from '../../redux/store.ts';
 
 export default function Pagination(): React.ReactNode {
   const totalCount = useSelector(selectTotalCount);
+  const page = useSelector(selectPage);
   const { theme } = useContext(ThemeContext);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [page, setPage] = useState(parseInt(searchParams.get('page') || '1'));
-
-  useEffect(() => {
-    setPage(parseInt(searchParams.get('page') || '1'));
-  }, [searchParams]);
+  const dispatch = useDispatch<AppDispatch>();
 
   function updateRouter(params: URLSearchParams) {
     params.delete('owner');
@@ -22,18 +24,18 @@ export default function Pagination(): React.ReactNode {
     router.push(`/search?${params.toString()}`);
   }
 
-  function prevPage() {
-    setPage(page - 1);
+  useEffect(() => {
     const params = new URLSearchParams(searchParams);
-    params.set('page', (page - 1).toString());
+    params.set('page', page.toString());
     updateRouter(params);
+  }, [page]);
+
+  function prevPage() {
+    dispatch(updatePage(page - 1));
   }
 
   function nextPage() {
-    setPage(page + 1);
-    const params = new URLSearchParams(searchParams);
-    params.set('page', (page + 1).toString());
-    updateRouter(params);
+    dispatch(updatePage(page + 1));
   }
 
   function isLastPage() {

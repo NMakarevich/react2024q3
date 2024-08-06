@@ -5,7 +5,7 @@ import { BASE_URL, PER_PAGE } from '../../consts.tsx';
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import ResultsList from '../../components/results-list/results-list.tsx';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { addCards } from '../../redux/slices/cards.slice.ts';
+import { addCards, updatePage } from '../../redux/slices/cards.slice.ts';
 import { Response } from '../../interfaces.ts';
 import { useLocalStorage } from '../../hooks/useLocalStorage.tsx';
 
@@ -36,6 +36,7 @@ export default function SearchPage({
     params.set('q', getSearchTerm() || '');
     params.set('page', getPageFromURL());
     router.push(`${pathname}?${params.toString()}`);
+    dispatch(updatePage(parseInt(getPageFromURL())));
   }, []);
 
   useEffect(() => {

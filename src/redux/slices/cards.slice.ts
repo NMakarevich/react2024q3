@@ -63,6 +63,7 @@ export const selectResponse = createSelector(
     };
   },
 );
+export const selectPage = (state: RootState) => state.cards.page;
 export const selectDetailedCard = (state: RootState) =>
   state.cards.detailedCard;
 
