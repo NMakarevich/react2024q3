@@ -1,5 +1,5 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
-import { Result } from '../../App.tsx';
+import { Result } from '../../interfaces.ts';
 import { RootState } from '../store.ts';
 
 export interface SelectedItemsState {
