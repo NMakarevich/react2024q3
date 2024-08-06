@@ -1,51 +1,71 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { IPageContext, PageContext } from '../../App.tsx';
-import { setupServer } from 'msw/node';
-import { http, HttpResponse } from 'msw';
-import { response } from '../../mock/mock.ts';
 import Pagination from './pagination.tsx';
+import { renderWithProviders } from '../../redux/test-utils.tsx';
 
-const server = setupServer(
-  http.get('https://api.github.com/search/repositories', () => {
-    return HttpResponse.json(response);
+vi.mock('next/navigation', async () => ({
+  useSearchParams: () => ({
+    get: vi.fn(),
+    set: vi.fn(),
   }),
-);
-
-beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
-
-const props: IPageContext = {
-  page: 1,
-  setPage: vi.fn(),
-};
+  useRouter: () => ({
+    push: vi.fn(),
+  }),
+}));
 
 describe('Pagination', () => {
-  it('Click on next page changes page to next', () => {
-    render(
+  it('Click on next page changes page to next', async () => {
+    const initialState = {
+      isLoading: false,
+      page: 1,
+      items: [],
+      totalCount: 30,
+      detailedCard: undefined,
+      searchTerm: '',
+    };
+
+    renderWithProviders(
       <MemoryRouter initialEntries={['?page=1']}>
-        <PageContext.Provider value={props}>
-          <Pagination totalCount={40} />
-        </PageContext.Provider>
+        <Pagination />
       </MemoryRouter>,
+      {
+        preloadedState: {
+          cards: initialState,
+        },
+      },
     );
     const nextButton = screen.getByRole('button', { name: /Next/i });
     fireEvent.click(nextButton);
-    const paginationText = nextButton.previousElementSibling;
-    expect(paginationText?.textContent).toBe('2 of 2');
+    await waitFor(() => {
+      const paginationText = nextButton.previousElementSibling;
+      expect(paginationText?.textContent).toBe('2 of 2');
+    });
   });
-  it('Click on prev page changes page to prev', () => {
-    render(
+  it('Click on prev page changes page to prev', async () => {
+    const initialState = {
+      isLoading: false,
+      page: 2,
+      items: [],
+      totalCount: 30,
+      detailedCard: undefined,
+      searchTerm: '',
+    };
+
+    renderWithProviders(
       <MemoryRouter initialEntries={['?page=2']}>
-        <PageContext.Provider value={props}>
-          <Pagination totalCount={40} />
-        </PageContext.Provider>
+        <Pagination />
       </MemoryRouter>,
+      {
+        preloadedState: {
+          cards: initialState,
+        },
+      },
     );
     const prevButton = screen.getByRole('button', { name: /Prev/i });
-    fireEvent.click(prevButton);
     const paginationText = prevButton.nextElementSibling;
-    expect(paginationText?.textContent).toBe('1 of 2');
+    fireEvent.click(prevButton);
+    await waitFor(() => {
+      expect(paginationText?.textContent).toBe('1 of 2');
+    });
   });
 });

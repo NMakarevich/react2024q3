@@ -1,11 +1,8 @@
 import React, { useContext, useEffect } from 'react';
-import {
-  ThemeContext,
-  IThemeContext,
-} from '../../providers/theme-provider.tsx';
+import { ThemeContext } from '../../providers/theme-provider.tsx';
 
 export function ToggleTheme(): React.ReactNode {
-  const { theme, setTheme } = useContext(ThemeContext) as IThemeContext;
+  const { theme, setTheme } = useContext(ThemeContext);
 
   function toggleTheme() {
     theme === 'dark' ? setTheme('light') : setTheme('dark');
