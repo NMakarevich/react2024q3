@@ -7,6 +7,7 @@ import ResultsList from '../../components/results-list/results-list.tsx';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { addCards } from '../../redux/slices/cards.slice.ts';
 import { Response } from '../../interfaces.ts';
+import { useLocalStorage } from '../../hooks/useLocalStorage.tsx';
 
 export const getServerSideProps = (async (context) => {
   const { page, q } = context.query;
@@ -27,6 +28,7 @@ export default function SearchPage({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [ls] = useLocalStorage('search-term');
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -45,7 +47,13 @@ export default function SearchPage({
   }
 
   function getSearchTerm() {
-    return searchParams.get('q');
+    let searchQuery = '';
+    if (searchParams.get('q')) {
+      searchQuery = searchParams.get('q') || '';
+    } else if (typeof window !== 'undefined') {
+      searchQuery = ls ? ls : '';
+    }
+    return searchQuery;
   }
 
   return <ResultsList></ResultsList>;

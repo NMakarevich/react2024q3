@@ -5,10 +5,12 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store.ts';
 import { setSearchTerm } from '../../redux/slices/cards.slice.ts';
 import { ThemeContext } from '../../providers/theme-provider.tsx';
+import { useLocalStorage } from '../../hooks/useLocalStorage.tsx';
 
 export default function Search(): React.ReactNode {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [ls, updateLocalStorage] = useLocalStorage('search-term');
   const [searchTerm, setSearchT] = useState(getSearchTerm);
   const { theme } = useContext(ThemeContext);
   const dispatch = useDispatch<AppDispatch>();
@@ -24,7 +26,13 @@ export default function Search(): React.ReactNode {
   }
 
   function getSearchTerm() {
-    return searchParams.get('q');
+    let searchQuery = '';
+    if (searchParams.get('q')) {
+      searchQuery = searchParams.get('q') || '';
+    } else if (typeof window !== 'undefined') {
+      searchQuery = ls ? ls : '';
+    }
+    return searchQuery;
   }
 
   function search() {
@@ -33,6 +41,9 @@ export default function Search(): React.ReactNode {
       params.set('q', searchTerm || '');
       params.set('page', '1');
       router.push(`/search?${params.toString()}`);
+      if (typeof window !== 'undefined') {
+        updateLocalStorage(searchTerm);
+      }
       dispatch(setSearchTerm(searchTerm));
     }
   }
