@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PER_PAGE } from '../../consts.tsx';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ThemeContext } from '../../providers/theme-provider.tsx';
@@ -11,6 +11,10 @@ export default function Pagination(): React.ReactNode {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [page, setPage] = useState(parseInt(searchParams.get('page') || '1'));
+
+  useEffect(() => {
+    setPage(parseInt(searchParams.get('page') || '1'));
+  }, [searchParams]);
 
   function updateRouter(params: URLSearchParams) {
     params.delete('owner');
