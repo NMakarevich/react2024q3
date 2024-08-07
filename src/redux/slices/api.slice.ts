@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { PER_PAGE } from '../../consts.tsx';
-import { Response, Result } from '../../App.tsx';
+import { ApiResponse, Result } from '../../interfaces.ts';
 
 export interface CardsQuery {
   searchTerm: string;
@@ -17,7 +17,7 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'https://api.github.com/' }),
   tagTypes: ['Cards'],
   endpoints: (builder) => ({
-    getCards: builder.query<Response, CardsQuery>({
+    getCards: builder.query<ApiResponse, CardsQuery>({
       query: ({ searchTerm, page }) => {
         if (!searchTerm)
           return `search/repositories?q=a&order=asc&page=${page}&per_page=${PER_PAGE}`;

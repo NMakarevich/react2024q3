@@ -3,6 +3,19 @@ export interface IThemeContext {
   setTheme: (theme: string) => void;
 }
 
+export interface IPageContext {
+  page: number;
+  setPage: (page: number) => void;
+}
+
+export interface ISelectedItemsContext {
+  items: Result[];
+  itemsIds: () => number[];
+  addItem: (item: Result) => void;
+  removeItem: (id: number) => void;
+  unselectAll: () => void;
+}
+
 export interface Result {
   created_at: string;
   description: string;
@@ -21,7 +34,7 @@ export interface Result {
   };
 }
 
-export interface Response {
+export interface ApiResponse {
   total_count: number;
   items: Result[];
 }

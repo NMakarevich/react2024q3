@@ -1,22 +1,21 @@
+'use client';
+
 import React, { useContext, useEffect, useState } from 'react';
 import { transformStars } from '../../utils.ts';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../../redux/store.ts';
-import {
-  deleteDetailedCard,
-  selectDetailedCard,
-} from '../../redux/slices/cards.slice.ts';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ThemeContext } from '../../providers/theme-provider.tsx';
+import { ThemeContext } from '../../providers/theme.provider.tsx';
+import { Result } from '../../interfaces.ts';
 
-export default function DetailedCard(): React.ReactNode {
+export default function DetailedCard({
+  item,
+}: {
+  item?: Result;
+}): React.ReactNode {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [, setOwner] = useState(searchParams.get('owner') || '');
   const [, setName] = useState(searchParams.get('name') || '');
   const { theme } = useContext(ThemeContext);
-  const dispatch = useDispatch<AppDispatch>();
-  const item = useSelector(selectDetailedCard);
 
   useEffect(() => {
     setName(searchParams.get('name') || '');
@@ -28,7 +27,6 @@ export default function DetailedCard(): React.ReactNode {
     params.delete('owner');
     params.delete('name');
     router.push(`/search?${params.toString()}`);
-    dispatch(deleteDetailedCard());
   }
 
   return (

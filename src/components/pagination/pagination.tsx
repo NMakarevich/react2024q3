@@ -1,22 +1,20 @@
+'use client';
+
 import React, { useContext, useEffect } from 'react';
 import { PER_PAGE } from '../../consts.tsx';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ThemeContext } from '../../providers/theme-provider.tsx';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  selectPage,
-  selectTotalCount,
-  updatePage,
-} from '../../redux/slices/cards.slice.ts';
-import { AppDispatch } from '../../redux/store.ts';
+import { ThemeContext } from '../../providers/theme.provider.tsx';
+import { PageContext } from '../../providers/page.provider.tsx';
 
-export default function Pagination(): React.ReactNode {
-  const totalCount = useSelector(selectTotalCount);
-  const page = useSelector(selectPage);
+export default function Pagination({
+  totalCount,
+}: {
+  totalCount: number;
+}): React.ReactNode {
   const { theme } = useContext(ThemeContext);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const dispatch = useDispatch<AppDispatch>();
+  const { page, setPage } = useContext(PageContext);
 
   function updateRouter(params: URLSearchParams) {
     params.delete('owner');
@@ -31,11 +29,11 @@ export default function Pagination(): React.ReactNode {
   }, [page]);
 
   function prevPage() {
-    dispatch(updatePage(page - 1));
+    setPage(page - 1);
   }
 
   function nextPage() {
-    dispatch(updatePage(page + 1));
+    setPage(page + 1);
   }
 
   function isLastPage() {
