@@ -7,7 +7,7 @@
   padding: 30px 10px 10px 10px;
   width: 400px;
   position: relative;
-  box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 3px 3px var(--box-shadow);
   font-size: 1.2rem;
 
   &-close {
@@ -20,6 +20,7 @@
     font-weight: 700;
     cursor: pointer;
     transition: 0.3s;
+    color: var(--color);
 
     &:hover {
       transform: scale(1.1);
