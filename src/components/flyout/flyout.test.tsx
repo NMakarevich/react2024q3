@@ -1,11 +1,8 @@
-import { renderWithProviders } from '../../redux/test-utils.tsx';
-import { response } from '../../mock/mock.ts';
 import { Flyout } from './flyout.tsx';
-import { fireEvent, screen } from '@testing-library/react';
-import { setupStore } from '../../redux/store.ts';
-import { addItem } from '../../redux/slices/selected-items.slice.ts';
-import { addCards } from '../../redux/slices/cards.slice.ts';
-import ResultsList from '../results-list/results-list.tsx';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { SelectedItemsContext } from '../../providers/selected-items.provider.tsx';
+import { response } from '../../mock/mock.ts';
+import { vi } from 'vitest';
 
 vi.mock('next/navigation', async () => ({
   useSearchParams: () => ({
@@ -20,31 +17,37 @@ vi.mock('next/navigation', async () => ({
 
 describe('Flyout', () => {
   global.URL.createObjectURL = vi.fn();
-  it('If check to items should display "Selected items: 2"', () => {
-    const store = setupStore();
-    store.dispatch(addCards(response));
-    renderWithProviders(
-      <>
-        <ResultsList></ResultsList>
-        <Flyout></Flyout>
-      </>,
-      { store },
+  it('Should display "Selected items: 3"', async () => {
+    render(
+      <SelectedItemsContext.Provider
+        value={{
+          items: response.items.slice(0, 3),
+          addItem: vi.fn(),
+          itemsIds: vi.fn(),
+          removeItem: vi.fn(),
+          unselectAll: vi.fn(),
+        }}
+      >
+        <Flyout />
+      </SelectedItemsContext.Provider>,
     );
-    const checkboxes = screen.getAllByRole('checkbox');
-    fireEvent.click(checkboxes[0]);
-    fireEvent.click(checkboxes[1]);
-    const selectedAmount = screen.getByText('Selected items:');
+    const selectedAmount = await screen.findByText('Selected items:');
     const amount = selectedAmount.nextElementSibling;
-    expect(amount?.textContent).toBe('2');
+    expect(amount?.textContent).toBe('3');
   });
   it('Click on unselect all should uncheck item', () => {
-    const store = setupStore();
-    store.dispatch(addItem(response.items[0]));
-    renderWithProviders(
-      <>
-        <Flyout></Flyout>
-      </>,
-      { store },
+    render(
+      <SelectedItemsContext.Provider
+        value={{
+          items: response.items,
+          addItem: vi.fn(),
+          itemsIds: vi.fn(),
+          removeItem: vi.fn(),
+          unselectAll: vi.fn(),
+        }}
+      >
+        <Flyout />
+      </SelectedItemsContext.Provider>,
     );
     const unselect = screen.getByRole('button', { name: /Unselect/i });
     fireEvent.click(unselect);

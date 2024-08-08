@@ -1,10 +1,8 @@
 import DetailedCard from './detailed-card';
 import { responseDetailedCard } from '../../mock/mock.ts';
-import { screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { Provider } from 'react-redux';
-import { store } from '../../redux/store.ts';
-import { renderWithProviders } from '../../redux/test-utils.tsx';
+import ThemeProvider from '../../providers/theme.provider.tsx';
 
 const snapshot = `
 <div class="card theme-light">
@@ -36,7 +34,7 @@ const snapshot = `
             <div class="card-topic">frontend</div>
             <div class="card-topic">javascript</div>
             <div class="card-topic">library</div>
-            <div class="card-topic">react</div>
+            <div class="card-topic">react</div> 
             <div class="card-topic">ui</div>
           </div>
         </div>
@@ -54,27 +52,13 @@ vi.mock('next/navigation', async () => ({
 }));
 
 describe('DetailedCard', () => {
-  it('Should render correctly', async () => {
-    const initialState = {
-      isLoading: false,
-      page: 1,
-      items: [],
-      totalCount: 0,
-      detailedCard: responseDetailedCard,
-      searchTerm: '',
-    };
-    renderWithProviders(
-      <Provider store={store}>
-        <DetailedCard />
-      </Provider>,
-      {
-        preloadedState: {
-          cards: initialState,
-        },
-      },
+  it('Should render correctly', () => {
+    render(
+      <ThemeProvider>
+        <DetailedCard item={responseDetailedCard} />
+      </ThemeProvider>,
     );
-
-    const button = await screen.findByRole('button');
+    const button = screen.getByRole('button');
     const card = button.closest('.card');
     expect(card).toMatchSnapshot(snapshot);
   });

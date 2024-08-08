@@ -1,7 +1,7 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Pagination from './pagination.tsx';
-import { renderWithProviders } from '../../redux/test-utils.tsx';
+import PageProvider from '../../providers/page.provider.tsx';
 
 vi.mock('next/navigation', async () => ({
   useSearchParams: () => ({
@@ -15,24 +15,12 @@ vi.mock('next/navigation', async () => ({
 
 describe('Pagination', () => {
   it('Click on next page changes page to next', async () => {
-    const initialState = {
-      isLoading: false,
-      page: 1,
-      items: [],
-      totalCount: 30,
-      detailedCard: undefined,
-      searchTerm: '',
-    };
-
-    renderWithProviders(
+    render(
       <MemoryRouter initialEntries={['?page=1']}>
-        <Pagination />
+        <PageProvider>
+          <Pagination totalCount={30} />
+        </PageProvider>
       </MemoryRouter>,
-      {
-        preloadedState: {
-          cards: initialState,
-        },
-      },
     );
     const nextButton = screen.getByRole('button', { name: /Next/i });
     fireEvent.click(nextButton);
@@ -42,24 +30,12 @@ describe('Pagination', () => {
     });
   });
   it('Click on prev page changes page to prev', async () => {
-    const initialState = {
-      isLoading: false,
-      page: 2,
-      items: [],
-      totalCount: 30,
-      detailedCard: undefined,
-      searchTerm: '',
-    };
-
-    renderWithProviders(
+    render(
       <MemoryRouter initialEntries={['?page=2']}>
-        <Pagination />
+        <PageProvider>
+          <Pagination totalCount={30} />
+        </PageProvider>
       </MemoryRouter>,
-      {
-        preloadedState: {
-          cards: initialState,
-        },
-      },
     );
     const prevButton = screen.getByRole('button', { name: /Prev/i });
     const paginationText = prevButton.nextElementSibling;

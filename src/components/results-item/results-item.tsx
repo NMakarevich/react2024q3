@@ -20,7 +20,7 @@ export function ResultsItem(props: Props): React.ReactNode {
   const { itemsIds, addItem, removeItem } = useContext(SelectedItemsContext);
 
   useEffect(() => {
-    setIsSelected(itemsIds().includes(result.id));
+    if (itemsIds()) setIsSelected(itemsIds().includes(result.id));
   }, [itemsIds()]);
 
   function navigateTo(event: React.MouseEvent<HTMLElement>) {
