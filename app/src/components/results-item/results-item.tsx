@@ -1,15 +1,11 @@
-import { PageContext, ThemeContext, Result } from '../../App.tsx';
 import './results-item.scss';
 import { useNavigate } from 'react-router-dom';
 import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
-import { transformStars } from '../../utils.ts';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectItemsIds } from '../../redux/slices/selected-items.slice.ts';
-import { AppDispatch } from '../../redux/store.ts';
-import {
-  addItem,
-  removeItem,
-} from '../../redux/slices/selected-items.slice.ts';
+import { transformStars } from '../../utils';
+import { PageContext } from '../../providers/page.provider';
+import { ThemeContext } from '../../providers/theme.provider';
+import { Result } from '../../App';
+import { SelectedItemsContext } from '../../providers/selected-items.provider';
 
 interface Props {
   result: Result;
@@ -20,13 +16,12 @@ export function ResultsItem(props: Props): React.ReactNode {
   const navigate = useNavigate();
   const { page } = useContext(PageContext);
   const { theme } = useContext(ThemeContext);
-  const selectedItemsIds = useSelector(selectItemsIds);
-  const dispatch: AppDispatch = useDispatch();
+  const { itemsIds, addItem, deleteItem } = useContext(SelectedItemsContext);
   const [isSelected, setIsSelected] = useState<boolean>(false);
 
   useEffect(() => {
-    setIsSelected(selectedItemsIds.includes(result.id));
-  }, [selectedItemsIds]);
+    setIsSelected(itemsIds().includes(result.id));
+  }, [itemsIds()]);
 
   function navigateTo(event: React.MouseEvent<HTMLElement>) {
     if (event.target instanceof HTMLDivElement)
@@ -37,9 +32,7 @@ export function ResultsItem(props: Props): React.ReactNode {
 
   function toggleSelect(event: ChangeEvent<HTMLInputElement>) {
     event.stopPropagation();
-    event.target.checked
-      ? dispatch(addItem(result))
-      : dispatch(removeItem(result.id));
+    event.target.checked ? addItem(result) : deleteItem(result.id);
   }
 
   return (
