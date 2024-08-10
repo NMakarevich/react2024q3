@@ -1,5 +1,7 @@
 {
-  "files": [],
+  "files": [
+    "node_modules/vitest/globals.d.ts"
+  ],
   "references": [
     {
       "path": "./tsconfig.app.json"
@@ -17,9 +19,6 @@
     "resolveJsonModule": true,
     "moduleResolution": "Bundler",
     "baseUrl": ".",
-    "noEmit": true,
-    "paths": {
-      "~/*": ["./app/*"]
-    }
+    "noEmit": true
   }
 }
