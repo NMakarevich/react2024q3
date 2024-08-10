@@ -2,7 +2,7 @@ import DetailedCard from './detailed-card';
 import { responseDetailedCard } from '../../mock/mock';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 const snapshot = ` <div
       class="card theme-light"
@@ -108,11 +108,10 @@ const snapshot = ` <div
 
 describe('DetailedCard', () => {
   it('Should render correctly', async () => {
-    render(
-      <BrowserRouter>
-        <DetailedCard item={responseDetailedCard} />
-      </BrowserRouter>,
-    );
+    const router = createMemoryRouter([
+      { path: '*', element: <DetailedCard item={responseDetailedCard} /> },
+    ]);
+    render(<RouterProvider router={router} />);
     const button = await screen.findByRole('button');
     const card = button.closest('.card');
     expect(card).toMatchSnapshot(snapshot);
