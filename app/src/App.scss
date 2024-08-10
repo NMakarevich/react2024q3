@@ -1,0 +1,38 @@
+@use './scss/themes' as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 20px;
+  background-color: var(--background-color);
+}
+
+.app-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  gap: 15px;
+  background-color: var(--background-color);
+  box-shadow: 0 0 3px 3px var(--box-shadow);
+  color: var(--color);
+}
+
+.app-main {
+  height: 100%;
+  display: flex;
+  background-color: var(--background-color);
+  color: var(--color);
+}
