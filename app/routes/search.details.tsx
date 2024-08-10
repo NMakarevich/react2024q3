@@ -1,7 +1,7 @@
-import DetailedCard from '../../src/components/detailed-card/detailed-card';
+import DetailedCard from '../src/components/detailed-card/detailed-card';
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { REPO_URL } from '../../src/consts';
-import { Result } from '../../src/interfaces';
+import { REPO_URL } from '../src/consts';
+import { Result } from '../src/interfaces';
 import { useLoaderData } from '@remix-run/react';
 import React from 'react';
 
