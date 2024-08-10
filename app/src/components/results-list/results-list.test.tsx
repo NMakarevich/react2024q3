@@ -1,11 +1,9 @@
-import { response } from '../../mock/mock.ts';
+import { response } from '../../mock/mock';
 import { render, screen } from '@testing-library/react';
-import ResultsList from './results-list.tsx';
+import ResultsList from './results-list';
 import { expect } from 'vitest';
 import { BrowserRouter } from 'react-router-dom';
-import { Response } from '../../App.tsx';
-import { Provider } from 'react-redux';
-import { store } from '../../redux/store.ts';
+import { ApiResponse } from '../../interfaces';
 
 describe('ResultsList Component', () => {
   it('Must render specified number of results', () => {
@@ -13,21 +11,17 @@ describe('ResultsList Component', () => {
     const itemsNumber = mock.items.length;
     render(
       <BrowserRouter>
-        <Provider store={store}>
-          <ResultsList response={mock} />
-        </Provider>
+        <ResultsList response={mock} />
       </BrowserRouter>,
     );
     const results = screen.getAllByLabelText('result-item');
     expect(results.length).toBe(itemsNumber);
   });
   it('Must show message if no results found', () => {
-    const mock: Response = { total_count: 0, items: [] };
+    const mock: ApiResponse = { total_count: 0, items: [] };
     render(
       <BrowserRouter>
-        <Provider store={store}>
-          <ResultsList response={mock} />
-        </Provider>
+        <ResultsList response={mock} />
       </BrowserRouter>,
     );
     const message = screen.getByText('No results found.');

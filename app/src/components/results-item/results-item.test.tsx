@@ -1,20 +1,15 @@
 import { ResultsItem } from './results-item';
-import { response } from '../../mock/mock.ts';
+import { response } from '../../mock/mock';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { expect } from 'vitest';
-import { transformStars } from '../../utils.ts';
-import { Provider } from 'react-redux';
-import { store } from '../../redux/store.ts';
+import { transformStars } from '../../utils';
 
 describe('ResultsItem', () => {
   it('Results item should render correctly', () => {
     const item = response.items[0];
     render(
       <BrowserRouter>
-        <Provider store={store}>
-          <ResultsItem result={item} />
-        </Provider>
+        <ResultsItem result={item} />
       </BrowserRouter>,
     );
     const avatar_url = item.owner.avatar_url;

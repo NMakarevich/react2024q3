@@ -1,22 +1,8 @@
 import DetailedCard from './detailed-card';
-import { setupServer } from 'msw/node';
-import { http, HttpResponse } from 'msw';
-import { responseDetailedCard } from '../../mock/mock.ts';
+import { responseDetailedCard } from '../../mock/mock';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { BrowserRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { store } from '../../redux/store.ts';
-
-const server = setupServer(
-  http.get('https://api.github.com/repos/facebook/react', () => {
-    return HttpResponse.json(responseDetailedCard);
-  }),
-);
-
-beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
 
 const snapshot = ` <div
       class="card theme-light"
@@ -121,32 +107,12 @@ const snapshot = ` <div
 `;
 
 describe('DetailedCard', () => {
-  it('Should be showing loader', () => {
-    const { pathname } = window.location;
-    const url = `${pathname}?owner=facebook&name=react`;
-    window.history.pushState({}, '', url);
-    render(
-      <BrowserRouter>
-        <Provider store={store}>
-          <DetailedCard />
-        </Provider>
-      </BrowserRouter>,
-    );
-    const loading = screen.getByText('Loading...');
-    expect(loading.textContent).toBe('Loading...');
-  });
   it('Should render correctly', async () => {
-    const { pathname } = window.location;
-    const url = `${pathname}?owner=facebook&name=react`;
-    window.history.pushState({}, '', url);
     render(
       <BrowserRouter>
-        <Provider store={store}>
-          <DetailedCard />
-        </Provider>
+        <DetailedCard item={responseDetailedCard} />
       </BrowserRouter>,
     );
-
     const button = await screen.findByRole('button');
     const card = button.closest('.card');
     expect(card).toMatchSnapshot(snapshot);
