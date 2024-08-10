@@ -1,11 +1,10 @@
 import './results-item.scss';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from '@remix-run/react';
 import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { transformStars } from '../../utils';
-import { PageContext } from '../../providers/page.provider';
 import { ThemeContext } from '../../providers/theme.provider';
-import { Result } from '../../App';
 import { SelectedItemsContext } from '../../providers/selected-items.provider';
+import { Result } from '../../interfaces';
 
 interface Props {
   result: Result;
@@ -14,7 +13,7 @@ interface Props {
 export function ResultsItem(props: Props): React.ReactNode {
   const { result } = props;
   const navigate = useNavigate();
-  const { page } = useContext(PageContext);
+  const [searchParams] = useSearchParams();
   const { theme } = useContext(ThemeContext);
   const { itemsIds, addItem, deleteItem } = useContext(SelectedItemsContext);
   const [isSelected, setIsSelected] = useState<boolean>(false);
@@ -24,10 +23,12 @@ export function ResultsItem(props: Props): React.ReactNode {
   }, [itemsIds()]);
 
   function navigateTo(event: React.MouseEvent<HTMLElement>) {
-    if (event.target instanceof HTMLDivElement)
-      navigate(
-        `/search/details?owner=${result.owner.login}&name=${result.name}&page=${page}`,
-      );
+    if (event.target instanceof HTMLDivElement) {
+      const params = new URLSearchParams(searchParams);
+      params.set('name', result.name);
+      params.set('owner', result.owner.login);
+      navigate({ pathname: '/search/details', search: params.toString() });
+    }
   }
 
   function toggleSelect(event: ChangeEvent<HTMLInputElement>) {
