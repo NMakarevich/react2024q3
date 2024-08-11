@@ -1,7 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { store } from '../../redux/store.ts';
 import ThemeProvider from '../../providers/theme.provider.tsx';
 import { ToggleTheme } from './toggle-theme.tsx';
 
@@ -10,9 +8,7 @@ describe('ToggleTheme', () => {
     render(
       <ThemeProvider>
         <MemoryRouter>
-          <Provider store={store}>
-            <ToggleTheme />
-          </Provider>
+          <ToggleTheme />
         </MemoryRouter>
       </ThemeProvider>,
     );
@@ -24,9 +20,7 @@ describe('ToggleTheme', () => {
     render(
       <ThemeProvider>
         <MemoryRouter>
-          <Provider store={store}>
-            <ToggleTheme />
-          </Provider>
+          <ToggleTheme />
         </MemoryRouter>
       </ThemeProvider>,
     );

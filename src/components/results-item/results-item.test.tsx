@@ -1,11 +1,8 @@
 import { ResultsItem } from './results-item';
 import { response } from '../../mock/mock.ts';
-import { screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { expect } from 'vitest';
 import { transformStars } from '../../utils.ts';
-import { Provider } from 'react-redux';
-import { store } from '../../redux/store.ts';
-import { renderWithProviders } from '../../redux/test-utils.tsx';
 
 vi.mock('next/navigation', async () => ({
   useSearchParams: () => ({
@@ -20,25 +17,7 @@ vi.mock('next/navigation', async () => ({
 describe('ResultsItem', () => {
   it('Results item should render correctly', () => {
     const item = response.items[0];
-    const initialState = {
-      isLoading: false,
-      page: 1,
-      items: [item],
-      totalCount: 0,
-      detailedCard: undefined,
-      searchTerm: '',
-    };
-
-    renderWithProviders(
-      <Provider store={store}>
-        <ResultsItem result={item} />
-      </Provider>,
-      {
-        preloadedState: {
-          cards: initialState,
-        },
-      },
-    );
+    render(<ResultsItem result={item} />);
     const avatar_url = item.owner.avatar_url;
     const login = item.owner.login;
     const html_url = item.html_url;
