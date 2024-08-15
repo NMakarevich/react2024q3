@@ -14,7 +14,6 @@ interface ErrorsObj {
 
 export default function UncontrolledForm(): ReactNode {
   const [errors, setErrors] = useState<ErrorsObj>({});
-  const [disabled, setDisabled] = useState<boolean>(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const countries = useSelector(selectCountries);
@@ -61,10 +60,6 @@ export default function UncontrolledForm(): ReactNode {
     accept_terms: string().required('Please accept terms'),
   });
 
-  function handleChange() {
-    if (disabled) setDisabled(false);
-  }
-
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -91,7 +86,6 @@ export default function UncontrolledForm(): ReactNode {
     } catch (error) {
       if (error instanceof ValidationError) {
         setPassword(formValues.password.toString());
-        setDisabled(true);
         setErrors(
           error.inner.reduce((acc: { [n: string]: string[] }, err) => {
             if (err.path) {
@@ -106,7 +100,7 @@ export default function UncontrolledForm(): ReactNode {
   }
 
   return (
-    <form className="form" onSubmit={handleSubmit} onChange={handleChange}>
+    <form className="form" onSubmit={handleSubmit}>
       <div className="form-field">
         <label htmlFor="name">Name:</label>
         <input className="input-field" type="text" id="name" name="name" />
@@ -216,11 +210,7 @@ export default function UncontrolledForm(): ReactNode {
           {errors?.accept_terms ? errors.accept_terms.join('; ') : ' '}
         </div>
       </div>
-      <button
-        className="form-btn form-submit"
-        type="submit"
-        disabled={disabled}
-      >
+      <button className="form-btn form-submit" type="submit">
         Submit
       </button>
     </form>
