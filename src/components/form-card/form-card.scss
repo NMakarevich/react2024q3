@@ -1,0 +1,30 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 200px;
+  border: 1px solid #0D47A1;
+  border-radius: 5px;
+
+  &:first-child {
+    border-color: #388E3C;
+  }
+
+  &-image {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+    list-style: none;
+
+    &-item {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

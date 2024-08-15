@@ -1,42 +1,76 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+.header {
+  display: flex;
+  justify-content: center;
+  padding: 15px;
+  background-color: #1976D2;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
+.nav {
+  display: flex;
+  gap: 15px;
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+  &-link {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: white;
+    transition: background-color 0.2s;
+    border-bottom: 2px solid transparent;
+    border-radius: 2px;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+      border-bottom: 2px solid white;
+    }
+
+    &:active {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+
+    &.active {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
   }
-  to {
-    transform: rotate(360deg);
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  min-width: 320px;
+  height: 100%;
+  padding: 15px;
+}
+
+.columns {
+  display: flex;
+  gap: 20px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 10px;
+  border: 1px solid #1976D2;
+  border-radius: 5px;
+  width: 220px;
+
+  &-content {
+    overflow: scroll;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+.page-title {
+  margin-bottom: 20px;
 }
