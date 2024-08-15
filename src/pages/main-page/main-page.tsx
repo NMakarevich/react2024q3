@@ -13,19 +13,23 @@ export default function MainPage() {
     <div className="columns">
       <div className="column">
         <h3 className="column-title">Uncontrolled forms:</h3>
-        <div className="column-content">
-          {[...uncontrolledForms].reverse().map((form, index) => (
-            <FormCard key={index} form={form} />
-          ))}
-        </div>
+        {uncontrolledForms.length > 0 && (
+          <div className="column-content">
+            {[...uncontrolledForms].reverse().map((form, index) => (
+              <FormCard key={index} form={form} />
+            ))}
+          </div>
+        )}
       </div>
       <div className="column">
         <h3 className="column-title">Controlled forms:</h3>
-        <div className="column-content">
-          {[...controlledForms].reverse().map((form, index) => (
-            <FormCard key={index} form={form} />
-          ))}
-        </div>
+        {controlledForms.length > 0 && (
+          <div className="column-content">
+            {[...controlledForms].reverse().map((form, index) => (
+              <FormCard key={index} form={form} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
