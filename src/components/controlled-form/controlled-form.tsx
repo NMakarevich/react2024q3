@@ -24,6 +24,13 @@ export default function ControlledForm(): React.ReactNode {
   const dispatch = useDispatch();
   const countries = useSelector(selectCountries);
   const [password, setPassword] = useState<string>('');
+  const [fileName, setFileName] = useState<string>('');
+
+  function handleSelectFile(event: React.ChangeEvent<HTMLInputElement>) {
+    if (event.target.files && event.target.files[0]) {
+      setFileName(event.target.files[0].name);
+    }
+  }
 
   function onSubmitHandler(data: ControlledFormInterface) {
     if (data.picture instanceof FileList) {
@@ -142,11 +149,14 @@ export default function ControlledForm(): React.ReactNode {
         <div className="errors">{errors?.country?.message}</div>
       </div>
       <div className="form-field form-field_file">
-        <label className="form-btn label-file" htmlFor="picture">
-          Upload picture
-        </label>
+        <div className="form-field_file-label">
+          <label className="form-btn label-file" htmlFor="picture">
+            Upload picture
+          </label>
+          <p className="file-name">{fileName}</p>
+        </div>
         <input
-          {...register('picture')}
+          {...register('picture', { onChange: handleSelectFile })}
           className="input-file"
           type="file"
           id="picture"

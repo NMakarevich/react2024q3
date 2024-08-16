@@ -19,6 +19,13 @@ export default function UncontrolledForm(): ReactNode {
   const navigate = useNavigate();
   const countries = useSelector(selectCountries);
   const [password, setPassword] = useState<string>('');
+  const [fileName, setFileName] = useState<string>('');
+
+  function handleSelectFile(event: React.ChangeEvent<HTMLInputElement>) {
+    if (event.target.files && event.target.files[0]) {
+      setFileName(event.target.files[0].name);
+    }
+  }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -155,10 +162,19 @@ export default function UncontrolledForm(): ReactNode {
         </div>
       </div>
       <div className="form-field form-field_file">
-        <label className="form-btn label-file" htmlFor="picture">
-          Upload picture
-        </label>
-        <input className="input-file" type="file" id="picture" name="picture" />
+        <div className="form-field_file-label">
+          <label className="form-btn label-file" htmlFor="picture">
+            Upload picture
+          </label>
+          <p className="file-name">{fileName}</p>
+        </div>
+        <input
+          className="input-file"
+          type="file"
+          id="picture"
+          name="picture"
+          onChange={handleSelectFile}
+        />
         <div className="errors">
           {errors?.picture ? errors.picture.join('; ') : ' '}
         </div>
