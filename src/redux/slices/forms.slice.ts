@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { FormInterface } from '../../interfaces.ts';
+  UncontrolledFormInterface,
 import { RootState } from '../store.ts';
 
 interface FormsState {
-  uncontrolled: FormInterface[];
-  controlled: FormInterface[];
+  uncontrolled: UncontrolledFormInterface[];
+  controlled: ControlledFormStoreInterface[];
 }
 
 const initialState: FormsState = {
@@ -17,6 +18,10 @@ export const formsSlice = createSlice({
   initialState,
   reducers: {
     addUncontrolledForm: (state, action: PayloadAction<FormInterface>) => {
+    addUncontrolledForm: (
+      state,
+      action: PayloadAction<UncontrolledFormInterface>,
+    ) => {
       state.uncontrolled.push(action.payload);
     },
     addControlledForm: (state, action: PayloadAction<FormInterface>) => {
