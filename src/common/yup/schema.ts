@@ -5,6 +5,7 @@ export const schema = object().shape({
     .required('Please enter name')
     .matches(/^[A-Z]/g, 'Name should be starts with capital letter'),
   age: number()
+    .typeError('Please enter a number')
     .required('Please enter age')
     .positive('Age must be a positive integer'),
   email: string()
