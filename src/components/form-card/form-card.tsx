@@ -1,8 +1,11 @@
 import './form-card.scss';
-import { UncontrolledFormInterface } from '../../interfaces.ts';
+import {
+  ControlledFormStoreInterface,
+  UncontrolledFormInterface,
+} from '../../interfaces.ts';
 
 interface Props {
-  form: UncontrolledFormInterface;
+  form: UncontrolledFormInterface | ControlledFormStoreInterface;
 }
 
 export default function FormCard(props: Props) {
