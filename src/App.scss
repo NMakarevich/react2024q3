@@ -64,6 +64,9 @@
   width: 220px;
 
   &-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
     padding: 10px;
     border: 1px solid #1976D2;
     border-radius: 5px;
