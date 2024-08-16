@@ -29,8 +29,9 @@ export const schema = object().shape({
     .required()
     .test('fileFormat', 'File should have png or jpeg extension', (file) => {
       if (!file) return false;
-      if (file instanceof FileList) return /(png|jpeg)$/.test(file[0]?.name);
-      return file && /(png|jpeg)$/.test(file?.name);
+      if (file instanceof FileList)
+        return /(png|jpg|jpeg)$/.test(file[0]?.name);
+      return file && /(png|jpg|jpeg)$/.test(file?.name);
     })
     .test('fileSize', 'File size must be less than 1MB', (file) => {
       if (!file) return false;
