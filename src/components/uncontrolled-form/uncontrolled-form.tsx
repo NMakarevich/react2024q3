@@ -1,5 +1,5 @@
 import '../styles.scss';
-import { mixed, number, object, ref, string, ValidationError } from 'yup';
+import { ValidationError } from 'yup';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCountries } from '../../redux/slices/countries.slice.ts';
@@ -7,6 +7,7 @@ import { ReactNode, useState } from 'react';
 import { addUncontrolledForm } from '../../redux/slices/forms.slice.ts';
 import { useNavigate } from 'react-router-dom';
 import PasswordStrength from '../password-strength/password-strength.tsx';
+import { schema } from '../../common/yup/schema.ts';
 
 interface ErrorsObj {
   [key: string]: string[];
@@ -19,60 +20,23 @@ export default function UncontrolledForm(): ReactNode {
   const countries = useSelector(selectCountries);
   const [password, setPassword] = useState<string>('');
 
-  const schema = object({
-    name: string()
-      .required('Please enter name')
-      .matches(/^[A-Z]/g, 'Name should be starts with capital letter'),
-    age: number()
-      .required('Please enter age')
-      .positive('Age must be a positive integer'),
-    email: string()
-      .required('Please enter email address')
-      .email('Please enter valid email'),
-    password: string()
-      .required('Please enter password')
-      .matches(/(?=.*\d)/g, 'Should contain at least one number')
-      .matches(/(?=.*[A-Z])/g, 'Should contain at least one uppercase letter')
-      .matches(/(?=.*[a-z])/g, 'Should contain at least one lowercase letter')
-      .matches(
-        /(?=.*[@$!%*?&])/g,
-        'Should contain at least one special character',
-      ),
-    password_confirmation: string()
-      .required('Please enter password again')
-      .oneOf([ref('password')], 'Passwords must match'),
-    gender: string().required('Please select a gender'),
-    country: string().required('Please select country'),
-    picture: mixed<File>()
-      .required('Please select a picture')
-      .test('fileFormat', 'File should have png or jpeg extension', (value) => {
-        if (value) {
-          return /(png|jpeg)$/.test(value.name);
-        }
-        return true;
-      })
-      .test('fileSize', 'File size must be less than 3MB', (value) => {
-        if (value) {
-          return value.size <= 1024000;
-        }
-        return true;
-      }),
-    accept_terms: string().required('Please accept terms'),
-  });
-
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formValues = Object.fromEntries(formData.entries());
+    const accept_terms = !!formValues.accept_terms;
 
     try {
-      schema.validateSync(formValues, { abortEarly: false });
+      schema.validateSync(
+        { ...formValues, accept_terms },
+        { abortEarly: false },
+      );
       const reader = new FileReader();
       reader.readAsDataURL(event.currentTarget.picture.files[0]);
       reader.onload = () =>
         dispatch(
           addUncontrolledForm({
-            accept_terms: formValues.accept_terms,
+            accept_terms,
             age: formValues.age,
             country: formValues.country,
             email: formValues.email,
@@ -201,7 +165,13 @@ export default function UncontrolledForm(): ReactNode {
       </div>
       <div className="form-group">
         <div className="form-field form-field_accept">
-          <input type="checkbox" id="accept_terms" name="accept_terms" />
+          <input
+            type="checkbox"
+            id="accept_terms"
+            name="accept_terms"
+            value="accept_terms"
+            defaultChecked={false}
+          />
           <label htmlFor="accept_terms">
             I accept Terms and Conditions agreement
           </label>
