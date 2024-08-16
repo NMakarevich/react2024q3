@@ -51,7 +51,7 @@ export default function UncontrolledForm(): ReactNode {
       if (error instanceof ValidationError) {
         setPassword(formValues.password.toString());
         setErrors(
-          error.inner.reduce((acc: { [n: string]: string[] }, err) => {
+          error.inner.reduce((acc: ErrorsObj, err) => {
             if (err.path) {
               if (!acc[err.path]) acc[err.path] = [];
               acc[err.path].push(err.message);
@@ -95,8 +95,8 @@ export default function UncontrolledForm(): ReactNode {
           name="password"
         />
         <PasswordStrength password={password} />
-        <div className="errors">
-          {errors?.password ? errors.password.join('; ') : ' '}
+        <div className="errors errors_password">
+          {errors?.password ? generatePasswordError(errors.password) : ' '}
         </div>
       </div>
       <div className="form-field">
@@ -185,4 +185,14 @@ export default function UncontrolledForm(): ReactNode {
       </button>
     </form>
   );
+}
+
+function generatePasswordError(errors: string[]) {
+  return [
+    ...errors.filter((message) => !message.startsWith('Should')),
+    `Password should contain at least:${errors
+      .filter((message) => message.startsWith('Should'))
+      .map((should) => should.replace('Should contain at least', ''))
+      .join(',')}`,
+  ].join('; ');
 }
