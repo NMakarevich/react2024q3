@@ -3,7 +3,7 @@ import { boolean, mixed, number, object, ref, string } from 'yup';
 export const schema = object().shape({
   name: string()
     .required('Please enter name')
-    .matches(/^[A-Z]/g, 'Name should be starts with capital letter'),
+    .matches(/^[A-Z|А-Я]/g, 'Name should be starts with capital letter'),
   age: number()
     .typeError('Please enter a number')
     .required('Please enter age')
@@ -14,8 +14,8 @@ export const schema = object().shape({
   password: string()
     .required('Please enter password')
     .matches(/(?=.*\d)/g, 'Should contain at least one number')
-    .matches(/(?=.*[A-Z])/g, 'Should contain at least one uppercase letter')
-    .matches(/(?=.*[a-z])/g, 'Should contain at least one lowercase letter')
+    .matches(/(?=.*[A-Z|А-Я])/g, 'Should contain at least one uppercase letter')
+    .matches(/(?=.*[a-z|а-я])/g, 'Should contain at least one lowercase letter')
     .matches(
       /(?=.*[@$!%*?&])/g,
       'Should contain at least one special character',
