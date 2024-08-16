@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store.ts';
 
-const countries = [
+export const countries = [
   'Afghanistan',
   'Albania',
   'Algeria',

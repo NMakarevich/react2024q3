@@ -1,4 +1,5 @@
 import { boolean, mixed, number, object, ref, string } from 'yup';
+import { countries } from '../../redux/slices/countries.slice.ts';
 
 export const schema = object().shape({
   name: string()
@@ -24,7 +25,9 @@ export const schema = object().shape({
     .required('Please enter password again')
     .oneOf([ref('password')], 'Passwords must match'),
   gender: string().required('Please select a gender'),
-  country: string().required('Please select country'),
+  country: string()
+    .required('Please select country')
+    .oneOf([...countries], 'Please select country from list'),
   picture: mixed<File | FileList>()
     .required()
     .test('fileFormat', 'File should have png or jpeg extension', (file) => {
