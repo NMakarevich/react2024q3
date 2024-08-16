@@ -74,12 +74,13 @@ export default function ControlledForm(): React.ReactNode {
       <div className="form-field">
         <label htmlFor="password">Password:</label>
         <input
-          {...register('password')}
+          {...register('password', {
+            onChange: (e) => setPassword(e.target.value),
+          })}
           className="input-field"
           type="password"
           id="password"
           name="password"
-          onInput={(e) => setPassword(e.currentTarget.value)}
         />
         <PasswordStrength password={password} />
         <div className="errors">{errors.password?.message}</div>
