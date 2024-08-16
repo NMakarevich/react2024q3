@@ -4,7 +4,10 @@
   gap: 5px;
   max-width: 400px;
   min-width: 320px;
+  padding: 10px;
   width: 100%;
+  border: 2px solid #1976D2;
+  border-radius: 10px;;
 
   &-field {
     display: flex;
@@ -24,6 +27,16 @@
     &_file {
       align-items: flex-start;
 
+      &-label {
+        display: flex;
+        align-items: center;
+        gap: 5px
+      }
+
+      .label-file {
+        flex-shrink: 0;
+      }
+
       .input-file {
         display: none;
       }
@@ -42,7 +55,7 @@
   }
 
   &-btn {
-    padding: 10px 20px;
+    padding: 10px;
     background-color: #1976D2;
     border: 2px solid #1976D2;
     border-radius: 3px;
@@ -70,10 +83,14 @@
 }
 
 .input-field {
-  padding: 10px;
+  padding: 5px;
   border: 1px solid #1976D2;
   border-radius: 3px;
   transition: 0.2s;
+
+  &:hover {
+    box-shadow: 0 0 2px 1px #1976D2;
+  }
 
   &:focus {
     border: 1px solid #0D47A1;
@@ -84,5 +101,9 @@
 .errors {
   min-height: 16px;
   font-size: 14px;
-  color: #D32F2F
+  color: #D32F2F;
+
+  &_password {
+    min-height: 32px;
+  }
 }
