@@ -1,39 +1,57 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../../redux/store.ts';
 import DetailedCard from '../../../components/detailed-card/detailed-card.tsx';
-import { REPO_URL } from '../../../consts.tsx';
+import { BASE_URL, PER_PAGE, REPO_URL } from '../../../consts.tsx';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import {
+  addCards,
   addDetailedCard,
   selectResponse,
 } from '../../../redux/slices/cards.slice.ts';
 import ResultsList from '../../../components/results-list/results-list.tsx';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { Result } from '../../../interfaces.ts';
+import { Result, Response } from '../../../interfaces.ts';
+import { PageContext } from '../../../providers/page.provider.tsx';
 
 export const getServerSideProps = (async (context) => {
-  const { owner, name } = context.query;
+  const { owner, name, q, page } = context.query;
   const res = await fetch(`${REPO_URL}/${owner}/${name}`);
   const data: Result = await res.json();
-  return { props: { data } };
+  const resList = await fetch(
+    `${BASE_URL}?q=${q}&page=${page}&per_page=${PER_PAGE}`,
+  );
+  const dataList: Response = await resList.json();
+  return { props: { data, dataList } };
 }) satisfies GetServerSideProps<{ data: Result }>;
 
 export default function DetailsPage({
   data,
+  dataList,
 }: InferGetServerSidePropsType<typeof getServerSideProps>): React.ReactNode {
   const dispatch = useDispatch<AppDispatch>();
   const response = useSelector(selectResponse);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { setPage } = useContext(PageContext);
+
+  useEffect(() => {
+    const page = searchParams.get('page');
+    if (page) {
+      setPage(parseInt(page));
+    }
+  }, []);
 
   useEffect(() => {
     if (response.items.length === 0 && pathname.includes('details')) {
-      const params = new URLSearchParams(searchParams);
-      params.delete('owner');
-      params.delete('name');
-      router.push(`/search?${params.toString()}`);
+      if (dataList.items.length === 0) {
+        const params = new URLSearchParams(searchParams);
+        params.delete('owner');
+        params.delete('name');
+        router.push(`/search?${params.toString()}`);
+      }
+      dispatch(addCards(dataList));
     }
   }, [response]);
 
