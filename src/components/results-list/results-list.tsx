@@ -8,7 +8,7 @@ import {
   selectResponse,
 } from '../../redux/slices/cards.slice.ts';
 import { selectItemsAmount } from '../../redux/slices/selected-items.slice.ts';
-import { ThemeContext } from '../../providers/theme-provider.tsx';
+import { ThemeContext } from '../../providers/theme.provider.tsx';
 
 export default function ResultsList(): React.ReactNode {
   const { theme } = useContext(ThemeContext);

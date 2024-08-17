@@ -7,7 +7,7 @@ import {
   selectDetailedCard,
 } from '../../redux/slices/cards.slice.ts';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ThemeContext } from '../../providers/theme-provider.tsx';
+import { ThemeContext } from '../../providers/theme.provider.tsx';
 
 export default function DetailedCard(): React.ReactNode {
   const router = useRouter();

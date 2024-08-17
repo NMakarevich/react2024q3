@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store.ts';
 import { setSearchTerm } from '../../redux/slices/cards.slice.ts';
-import { ThemeContext } from '../../providers/theme-provider.tsx';
+import { ThemeContext } from '../../providers/theme.provider.tsx';
 import { useLocalStorage } from '../../hooks/useLocalStorage.tsx';
 
 export default function Search(): React.ReactNode {

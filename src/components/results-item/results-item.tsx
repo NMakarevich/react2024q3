@@ -9,7 +9,7 @@ import {
 } from '../../redux/slices/selected-items.slice.ts';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Result } from '../../interfaces.ts';
-import { ThemeContext } from '../../providers/theme-provider.tsx';
+import { ThemeContext } from '../../providers/theme.provider.tsx';
 
 interface Props {
   result: Result;

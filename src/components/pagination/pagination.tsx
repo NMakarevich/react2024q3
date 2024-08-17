@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { PER_PAGE } from '../../consts.tsx';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ThemeContext } from '../../providers/theme-provider.tsx';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectPage,
@@ -9,6 +8,7 @@ import {
   updatePage,
 } from '../../redux/slices/cards.slice.ts';
 import { AppDispatch } from '../../redux/store.ts';
+import { ThemeContext } from '../../providers/theme.provider.tsx';
 
 export default function Pagination(): React.ReactNode {
   const totalCount = useSelector(selectTotalCount);

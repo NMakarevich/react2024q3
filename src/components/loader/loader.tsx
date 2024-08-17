@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ThemeContext } from '../../providers/theme-provider.tsx';
+import { ThemeContext } from '../../providers/theme.provider.tsx';
 
 interface Props {
   isLoading: boolean;
