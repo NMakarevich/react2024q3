@@ -10,13 +10,16 @@
   gap: 15px;
 
   &-link {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 10px;
-    text-decoration: none;
-    color: white;
-    transition: background-color 0.2s;
     border-bottom: 2px solid transparent;
     border-radius: 2px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.2s;
 
     &:hover {
       background-color: rgba(255, 255, 255, 0.3);
@@ -52,8 +55,11 @@
 }
 
 .columns {
-  display: flex;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  max-width: 615px;
+  width: 100%;
 }
 
 .column {
@@ -61,7 +67,12 @@
   flex-direction: column;
   align-items: center;
   gap: 5px;
-  width: 220px;
+  max-width: 300px;
+  color: #1976D2;
+
+  &-title {
+    text-align: center;
+  }
 
   &-content {
     display: flex;
