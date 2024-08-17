@@ -5,6 +5,7 @@ import { Flyout } from '../components/flyout/flyout.tsx';
 import ThemeProvider from '../providers/theme.provider.tsx';
 import { store } from '../redux/store.ts';
 import { Provider } from 'react-redux';
+import PageProvider from '../providers/page.provider.tsx';
 
 export default function RootLayout({
   children,
@@ -15,15 +16,17 @@ export default function RootLayout({
     <>
       <Provider store={store}>
         <ThemeProvider>
-          <header className={`app-header`}>
-            <h1>Search repository on GitHub</h1>
-            <Search></Search>
-            <ToggleTheme />
-          </header>
-          <main className={`app-main`}>
-            {children}
-            <Flyout />
-          </main>
+          <PageProvider>
+            <header className={`app-header`}>
+              <h1>Search repository on GitHub</h1>
+              <Search></Search>
+              <ToggleTheme />
+            </header>
+            <main className={`app-main`}>
+              {children}
+              <Flyout />
+            </main>
+          </PageProvider>
         </ThemeProvider>
       </Provider>
     </>

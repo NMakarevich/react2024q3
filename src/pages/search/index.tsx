@@ -1,13 +1,14 @@
 import { AppDispatch } from '../../redux/store.ts';
 import { useDispatch } from 'react-redux';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { BASE_URL, PER_PAGE } from '../../consts.tsx';
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import ResultsList from '../../components/results-list/results-list.tsx';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { addCards, updatePage } from '../../redux/slices/cards.slice.ts';
+import { addCards } from '../../redux/slices/cards.slice.ts';
 import { Response } from '../../interfaces.ts';
 import { useLocalStorage } from '../../hooks/useLocalStorage.tsx';
+import { PageContext } from '../../providers/page.provider.tsx';
 
 export const getServerSideProps = (async (context) => {
   const { page, q } = context.query;
@@ -30,13 +31,14 @@ export default function SearchPage({
   const searchParams = useSearchParams();
   const [ls] = useLocalStorage('search-term');
   const dispatch = useDispatch<AppDispatch>();
+  const { setPage } = useContext(PageContext);
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
     params.set('q', getSearchTerm() || '');
     params.set('page', getPageFromURL());
     router.push(`${pathname}?${params.toString()}`);
-    dispatch(updatePage(parseInt(getPageFromURL())));
+    setPage(parseInt(getPageFromURL()));
   }, []);
 
   useEffect(() => {
